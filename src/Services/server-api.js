@@ -15,6 +15,8 @@ const BASE_URL = process.env.REACT_APP_BASE_URL;
 const getNotes = async () => {
     const url = `${BASE_URL}note/data`;
     try {
+
+          
       const response = await axios.get(url);
       const data =  response.data;
       // Transform the data into the desired format
@@ -23,10 +25,7 @@ const getNotes = async () => {
     } catch (error) {
       console.error(error);
       throw new Error('Some error occurred while fetching data.');
-    } finally {
-      console.log(`Base URL ${url}`)
-
-    }
+    } 
   };
 
 

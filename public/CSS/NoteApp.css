@@ -39,7 +39,7 @@ footer {
 footer p {
   color: #ccc;
 }
-.note {
+.note, .skeleton-note {
 
   display: flex;
   flex-direction: column;
@@ -67,7 +67,7 @@ footer p {
   transform: scale(1.03);
   box-shadow: 0 0 7px 3px orange;
 }
-.note h1 {
+.note h1, .skeleton-title {
   font-size: 1.1em;
   margin-bottom: 6px;
   overflow: hidden;
@@ -149,7 +149,7 @@ footer p {
   left: 5px;
 }
 
-.note p {
+.note p, .skeleton-content {
   font-size: 0.9em;
   margin-bottom: 10px;
   white-space: pre-wrap;
@@ -231,7 +231,7 @@ place-items: center;
 
 
 
-.notes-display {
+.notes-display, .skeleton {
   
   justify-content: space-around; 
   display: flex;
@@ -470,3 +470,34 @@ background-color: orange;
   color: #007bff;
 }
 
+/* Add blinking animation */
+@keyframes blink {
+  0%, 100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.005);
+  }
+}
+
+.skeleton-note {
+  height: 140px;
+  background: linear-gradient(90deg, #ff9c00, #ffb966); /* Light and dark orange colors */
+  background-size: 200% 100%; /* Increase the background size for animation effect */
+  animation: blink 2s infinite; /* Apply the blinking animation */
+}
+
+.skeleton-title {
+  width: 95%;
+  height: 20px;
+  background-color: #e0e0e0;
+  margin: 8px 0;
+}
+
+.skeleton-content {
+  width: 95%;
+  height: 100px;
+  background-color: #e0e0e0;
+  margin: 8px 0;
+}
