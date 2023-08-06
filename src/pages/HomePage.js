@@ -24,9 +24,8 @@ const HomePage = () => {
 
   return (
     <div>
-     <h1>url: {process.env.REACT_APP_BASE_URL}</h1>
-      <h1> Test: {process.env.REACT_APP_TEST}</h1>
-      <h1> {process.env.NODE_ENV} </h1>
+    
+    
       <h1>Page 1</h1>
       <h1>num 1: {num1}</h1>
       <input type="number" value={newNum} onChange={(e) => setNewNum(e.target.value)} />

@@ -4,7 +4,7 @@ import axios from "axios";
 
 
 //My base url 
-const BASE_URL = "http://localhost:5500/";
+const BASE_URL = process.env.REACT_APP_BASE_URL;
 
 //Get all the states 
 
@@ -23,6 +23,9 @@ const getNotes = async () => {
     } catch (error) {
       console.error(error);
       throw new Error('Some error occurred while fetching data.');
+    } finally {
+      console.log(`Base URL ${url}`)
+
     }
   };
 
@@ -30,7 +33,7 @@ const getNotes = async () => {
 //-------------------- CRETA A NEW NOTE  -----------------------------//
 
 const createNewNote = async (noteData) => {
-  const BASE_URL = 'http://localhost:5500/'; // Replace with your actual back-end URL
+ 
   const url = `${BASE_URL}note/create`;
 
   try {

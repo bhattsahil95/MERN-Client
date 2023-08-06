@@ -11,7 +11,7 @@ export default function ServerApi () {
     
 
     const startData = ""
-    const BASE_URL = "http://localhost:5500/";
+    const BASE_URL = "https://mern-server-1j3g.onrender.com/";
 
     const [data, setData] = useState(startData);
     const [isLoading, setIsLoading] = useState(true);
