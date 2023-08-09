@@ -212,7 +212,7 @@ text-shadow: #ff6f00;
 }
 
 .notes-display::-webkit-scrollbar-thumb {
-  background-color: orange; /* Set the color of the scrollbar thumb (the draggable part) */
+  background-color: #ff8c00; /* Set the color of the scrollbar thumb (the draggable part) */
   border-radius: 7px;
   height:2px; /* Set the border radius to make it rounded */
 }
@@ -220,10 +220,10 @@ text-shadow: #ff6f00;
 /* Firefox */
 .notes-display {
   scrollbar-width: thin; /* Set the width of the scrollbar */
-  scrollbar-color: orange black; /* Set the color of the scrollbar thumb (the draggable part) and make the track transparent */
+  scrollbar-color: #ff8c00 black; /* Set the color of the scrollbar thumb (the draggable part) and make the track transparent */
 }
 
 /* For Firefox on macOS (optional) */
 .notes-display {
-  scrollbar-color: orange black; /* Set the color of the scrollbar thumb and track (macOS only) and make the track transparent */
+  scrollbar-color: #ff8c00 black; /* Set the color of the scrollbar thumb and track (macOS only) and make the track transparent */
 }

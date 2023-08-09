@@ -12,11 +12,15 @@ body {
 }
 
 header {
-  background-color: #f5ba13;
+  background-color: #ff8c00;
   margin: auto -16px;
-  padding: 16px 32px;
-  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.3);
+  padding: 8px 32px;
+  box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.3);
+  
 }
+
+
+
 
 header h1 {
   color: #fff;
@@ -76,7 +80,7 @@ footer p {
 
 .form {
   position: relative;
-  width: 480px;
+  width: 40%;
   margin: 30px auto 20px auto;
   background: #fff;
   padding: 15px;
@@ -239,7 +243,8 @@ place-items: center;
   top:0; 
   flex-wrap: wrap;
   overflow-y: auto; /* Add a vertical scroll menu if content overflows */
-  max-height: 45vh; 
+  max-height: 55vh; 
+  resize: both;
 }
 
 .note-read {

@@ -1,15 +1,11 @@
-import React from 'react';
+import React from "react";
 
-import NoteReactApp from '../components/Mern Keeper/NoteReactApp';
+import NoteReactApp from "../components/Mern Keeper/NoteReactApp";
 
 function MernNotes() {
-
-
   return (
     <div>
-  
-      <NoteReactApp />  
-    
+      <NoteReactApp />
     </div>
   );
 }
