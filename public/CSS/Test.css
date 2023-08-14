@@ -1,0 +1,35 @@
+
+
+.about-page {
+margin: 20px;
+padding: 20px;
+background-color: #f7f7f7;
+border-radius: 10px;
+box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.hero {
+text-align: center;
+margin-bottom: 20px;
+}
+
+.section-title {
+font-size: 18px;
+font-weight: bold;
+margin-top: 20px;
+}
+
+.social-links img,
+.languages-tools img {
+width: 80px;
+height: 80px;
+margin: 5px;
+transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+.social-links img:hover,
+.languages-tools img:hover {
+transform: scale(1.1);
+filter: drop-shadow(0 0 2px orange);
+}
+

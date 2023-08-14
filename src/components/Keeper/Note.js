@@ -10,7 +10,7 @@ function Note(props) {
   const { title, content, timeCreated, removeNote, displayNote} = props;
  
   
-  const {num1, state2, state1} = useStore(); 
+ 
   const titleLimit = 30;
   const contentLimit = 200; 
 
@@ -27,7 +27,7 @@ function Note(props) {
       <h1>{limitedTitle}</h1>
        <button className="note-read" onClick={displayNote}> <OpenInNewTwoToneIcon /> </button>
        <p className="note-content">{limitedContent}</p>
-      <p>N:{num1} S2:{state2} S1: {state1}</p>
+   
       <div className="note-bottom">
       <p className="time-stamp">
         <span role="img" aria-label="clock emoji">

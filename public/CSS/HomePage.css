@@ -1,0 +1,72 @@
+.home-page {
+   
+    height: 100vh; /* Set the height of the home-page section to fill the viewport */
+    overflow: hidden; /* Hide overflow to prevent scrollbars */
+  
+  }
+  
+  #particles-js {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+  }
+  
+  .intro {
+    
+    display: flex;
+    flex-wrap: wrap;       
+    position: absolute;
+    top: 20%;
+    width: 100%; 
+    text-align: center;
+    color: rgb(0, 0, 0); /* Set text color */
+    
+  
+  }
+  
+  .home-page-header {
+  display: flex;
+  flex-direction: column; 
+  flex-wrap: wrap;
+  justify-content: center; /* Center the content horizontally */
+  align-items: center;
+  width: 100%; /* Full width of the container */
+  font-size: 16px;
+  margin-bottom: 20px;
+  }
+  
+  
+  
+  .typewriter-wrapper {
+  font-size: 36px; /* Adjust the font size as needed */
+  font-weight: bold;
+  color: #ff8c00; /* Change the color to your preferred color */
+  }
+  
+  
+  
+  .intro-text {
+  position: absolute;
+  width: 70%; 
+  left: 50%;
+  transform: translateX(-50%);
+  margin-top: 180px; /* Add some top margin for spacing */
+  padding: 10px 20px;
+  font-family: "Arial", sans-serif;
+  line-height: 1.5;
+  color: #333; /* Set your preferred text color */
+  font-size: 18px; 
+  font-weight: bolder; 
+  background-color: rgba(255, 0, 0, 0.3); /* Red with 70% opacity */
+  outline: 5px dashed ;
+  outline-offset: 15px;
+  border-radius: 15px; 
+  
+  
+  
+  
+  }
+  
