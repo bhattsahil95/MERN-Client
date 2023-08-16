@@ -36,18 +36,18 @@
         }
       },
       "size": {
-        "value": 1,
+        "value": 2,
         "random": true,
         "anim": {
           "enable": false,
-          "speed": 20,
+          "speed": 10,
           "size_min": 0.1,
           "sync": true
         }
       },
       "line_linked": {
         "enable": true,
-        "distance": 200,
+        "distance": 250,
         "color": "#ff8c00",
         "opacity": 0.4,
         "width": 2
@@ -82,7 +82,7 @@
       },
       "modes": {
         "grab": {
-          "distance": 200,
+          "distance": 100,
           "line_linked": {
             "opacity": 1
           }
