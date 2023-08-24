@@ -1,6 +1,7 @@
 import React  from "react";
 import Dropdown from "./Helper/dropdown";
 import noteStore from "../../noteStore";
+import Message from "./Helper/message";
 
 function Header( {selectedOption, setSelectedOption} ) {
 
@@ -20,13 +21,19 @@ function Header( {selectedOption, setSelectedOption} ) {
     <header>
     <div className="notespage-header">
       <h1>Personal Note Book</h1>
-      <div className="notes-per-page-input">
+           <div className="notes-per-page-input">
       <h2>Notes per Page : </h2>
      
       <Dropdown selectedValue={selectedOption} options={options} onChange={handleDropdownChange} />
      
       </div>
+    
     </div>
+    <Message
+				msg={
+					"Please note, I am using free service. It might take some time to cook up my backend.! "
+				}
+			/>   
     </header>
     
   );
