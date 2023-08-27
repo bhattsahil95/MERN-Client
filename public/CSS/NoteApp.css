@@ -1,509 +1,463 @@
 * {
-  padding: 0;
-  margin: 0;
-  box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
 }
 html {
-  font-family: "Montserrat", sans-serif;
+    font-family: "Montserrat", sans-serif;
 }
 body {
-  background: #eee;
-  padding: 0 16px;
+    background: #eee;
+    padding: 0 16px;
 }
 
 header {
-  display: relative;
-  background-color: #ff8c00;
-  padding: 5px 10px; 
-  height: 65px; 
-  box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.3);
-  
+    display: relative;
+    background-color: #ff8c00;
+    padding: 5px 10px;
+    height: 65px;
+    box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.3);
 }
 
-
-
-
 header h1 {
-  color: #fff;
-  font-family: "McLaren", cursive;
-  font-weight: 200;
+    color: #fff;
+    font-family: "Calibri";
 }
 
 footer {
-  position: fixed;
-  text-align: center;
-  bottom: 0;
-  width: 100%;
-  height: 2.5rem;
-  background-color: #f0f0f0;
-  font-weight: bolder;
-  /* Add other styles as needed */
+    position: fixed;
+    text-align: center;
+    bottom: 0;
+    width: 100%;
+    height: 2.5rem;
+    background-color: #f0f0f0;
+    font-weight: bolder;
+    /* Add other styles as needed */
 }
-
 
 footer p {
-  color: #ccc;
+    color: #ccc;
 }
-.note, .skeleton-note {
-
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  height: fit-content;
-  max-height: 200px; /* Set the maximum height */
-  min-height: 50px; /* Set the minimum height */
-  overflow: hidden; /* Hide any overflow content */
-  background: #fff;
-  border-radius: 7px;
-  box-shadow: 0 2px 5px #ccc;
-  position: relative;
-  padding: 10px;
-  width: 340px;
-  margin: 16px;
-  float: left;
-  border: 1px solid orange;
-  transition-property: transform, background-color;
-  transition-duration: 0.5s;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Add the box shadow */
+.note,
+.skeleton-note {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: fit-content;
+    max-height: 200px; /* Set the maximum height */
+    min-height: 50px; /* Set the minimum height */
+    overflow: hidden; /* Hide any overflow content */
+    background: #fff;
+    border-radius: 7px;
+    box-shadow: 0 2px 5px #ccc;
+    position: relative;
+    padding: 10px;
+    width: 340px;
+    margin: 16px;
+    float: left;
+    border: 1px solid orange;
+    transition-property: transform, background-color;
+    transition-duration: 0.5s;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 7px 7px 0px rgba(10, 0, 0, 0.2); /* Add the box shadow */
 }
 
 .note:hover {
-  transform: scale(1.03);
-  box-shadow: 0 0 7px 3px orange;
+    transform: scale(1.03);
+    box-shadow: 0 0 7px 3px orange;
 }
-.note h1, .skeleton-title {
-  font-size: 1.1em;
-  margin-bottom: 6px;
-  overflow: hidden;
-  width: 90%;
+.note h1,
+.skeleton-title {
+    font-size: 1.1em;
+    margin-bottom: 6px;
+    overflow: hidden;
+    width: 90%;
 }
 
 .form {
-  position: relative;
-  width: 40%;
-  margin: 30px auto 20px auto;
-  background: #fff;
-  padding: 15px;
-  border-radius: 7px;
-  box-shadow: 0 1px 5px rgb(138, 137, 137);
+    position: relative;
+    width: 40%;
+    margin: 30px auto 20px auto;
+    background: #fff;
+    padding: 15px;
+    border-radius: 7px;
+    box-shadow: 0 1px 5px rgb(138, 137, 137);
 }
 .form input,
 .form textarea {
-  width: 100%;
-  border: none;
-  padding: 4px;
-  outline: none;
-  font-size: 1.2em;
-  font-family: inherit;
-  resize: none;
+    width: 100%;
+    border: none;
+    padding: 4px;
+    outline: none;
+    font-size: 1.2em;
+    font-family: inherit;
+    resize: none;
 }
 .form button {
-  position: absolute;
-  right: 18px;
-  bottom: -18px;
-  background: #f5ba13;
-  color: #fff;
-  border: none;
-  border-radius: 50%;
-  width: 36px;
-  height: 36px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-  cursor: pointer;
-  outline: none;
+    position: absolute;
+    right: 18px;
+    bottom: -18px;
+    background: #f5ba13;
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+    outline: none;
 }
 
 .note-delete {
-  position: relative;
-  float: right;
-  margin-left: 90%;
- 
-  border: 1px solid;
-  width: 55px;
-  height: 26px;
-  cursor: pointer;
-  outline: none;
-  border-width: 100%;
+    position: relative;
+    float: right;
+    margin-left: 90%;
 
-  background-color: transparent;
-  border-radius: 20%;
-  transition-property: transform, background-color;
-  transition-duration: 0.5s;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Add the box shadow */
+    border: 1px solid;
+    width: 55px;
+    height: 26px;
+    cursor: pointer;
+    outline: none;
+    border-width: 100%;
+
+    background-color: transparent;
+    border-radius: 20%;
+    transition-property: transform, background-color;
+    transition-duration: 0.5s;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Add the box shadow */
 }
-
-
-/* .note button {
-  position: relative;
-  float: right;
-  margin-right: 10px;
-  color: #f5ba13;
-  border: none;
-  width: 36px;
-  height: 36px;
-  cursor: pointer;
-  outline: none;
-} */
 
 .note .time-stamp {
-  font-size: 70%;
-  color: dark blueviolet;
-  position: absolute;
-  bottom: 5px;
-  left: 5px;
+    font-size: 70%;
+    color: dark blueviolet;
+    position: absolute;
+    bottom: 5px;
+    left: 5px;
 }
 
-.note p, .skeleton-content {
-  font-size: 0.9em;
-  margin-bottom: 10px;
-  white-space: pre-wrap;
-  word-wrap: break-word;
+.note p,
+.skeleton-content {
+    font-size: 0.9em;
+    margin-bottom: 10px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
 }
-
 
 .notes-list-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .pagination {
-  display: flex;
-  justify-content: center;
-   position:fixed;
-  bottom: 7%;
-  left: 50%;
-  transform: translate(-50%);
-  
+    display: flex;
+    justify-content: center;
+    position: fixed;
+    bottom: 7%;
+    left: 50%;
+    transform: translate(-50%);
 }
 
-
 .pagination button {
-  margin: 0 5px;
-  padding: 5px 10px;
-  border: none;
-  background-color: #f5ba13;
-  color: black;
-  font-size: 14px;
-  cursor: pointer;
+    margin: 0 5px;
+    padding: 5px 10px;
+    border: none;
+    background-color: #f5ba13;
+    color: black;
+    font-size: 14px;
+    cursor: pointer;
 }
 
 .pagination button.active {
-  background-color: darkorange;
-  transform: scale(1.15);
-  border-radius: 50%;
-  transition: transform 0.3s ease;
+    background-color: darkorange;
+    transform: scale(1.15);
+    border-radius: 50%;
+    transition: transform 0.3s ease;
 }
 
 .notespage-header {
-color: #fff;
-  font-family: "McLaren", cursive;
-  font-weight: 200;
-display: flex;
-justify-content: space-between;
-margin-right: 5%;
-align-items: center;
-
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+    margin-right: 5%;
+    align-items: center;
 }
 
 .notes-per-page-input {
-display: flex;
-justify-content: space-between;
-  align-items: center;
-  
-
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .notes-per-page-input h2 {
-
-display: grid;
-place-items: center;
- 
-  
+    display: grid;
+    place-items: center;
 }
-
 
 .note-content {
-  position: relative;
-  max-height: 90px; /* Specify the maximum height you want here */
+    position: relative;
+    max-height: 90px; /* Specify the maximum height you want here */
 
-  /* Enable scrolling for content that exceeds the maximum height */
-  overflow-y:auto;
-  overflow: hidden;
-  width: 90%;
+    /* Enable scrolling for content that exceeds the maximum height */
+    overflow-y: auto;
+    overflow: hidden;
+    width: 90%;
 }
 
-
-
-.notes-display, .skeleton {
-  
-  justify-content: space-around; 
-  display: flex;
-  position: relative; 
-  top:0; 
-  flex-wrap: wrap;
-  overflow-y: auto; /* Add a vertical scroll menu if content overflows */
-  max-height: 55vh; 
-  resize: both;
+.notes-display,
+.skeleton {
+    justify-content: space-around;
+    display: flex;
+    position: relative;
+    top: 0;
+    flex-wrap: wrap;
+    overflow-y: auto; /* Add a vertical scroll menu if content overflows */
+    max-height: 55vh;
+    resize: both;
+    gap: 20px;
 }
 
 .note-read {
-  position: absolute;
-  float: right;
-  left: 85%;
-  color: #020202;
-  width: 55px;
-  height: 26px;
-  cursor: pointer;
-  background-color: transparent;
-  border: none;
- 
+    position: absolute;
+    float: right;
+    left: 85%;
+    color: #020202;
+    width: 55px;
+    height: 26px;
+    cursor: pointer;
+    background-color: transparent;
+    border: none;
 }
 
 .note-read:hover {
-  
-  transform: scale(1.1);
-  color: darkgreen;
-  
-  /* Your other styles for the hover effect */
+    transform: scale(1.1);
+    color: darkgreen;
+
+    /* Your other styles for the hover effect */
 }
 
 .note-delete:hover {
-
-  transform: scale(1.1);
-  color: red;
+    transform: scale(1.1);
+    color: red;
 }
 .notes-container {
-
-height: 100vh; /* Set the container height to 100% of the viewport height */
-
-
+    height: 100vh; /* Set the container height to 100% of the viewport height */
 }
 
 .popup {
-  position:fixed;
-  top: 330px; /* Move the popup below the screen */
-  left: 50%;
-  transform: translate(-50%, -20%) ; /* Scale it down initially */
-  background-color: white;
-  padding: 5%;
-  
-  border: 2px solid orangered;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-  z-index: 9999;
-  /* Limit the width to 50% of the screen */
-  min-width: 50%;
-  max-width: 90%;
-  /* Set a maximum height and enable scrolling */
-  min-height: 30vh;
-  max-height: 60vh;
- 
-  resize:both;
-  overflow-y: auto;
-  animation: slideIn 0.3s ease-in-out; /* Add the slideIn animation */
+    position: fixed;
+    top: 330px; /* Move the popup below the screen */
+    left: 50%;
+    transform: translate(-50%, -20%); /* Scale it down initially */
+    background-color: white;
+    padding: 5%;
+
+    border: 2px solid orangered;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    z-index: 9999;
+    /* Limit the width to 50% of the screen */
+    min-width: 50%;
+    max-width: 90%;
+    /* Set a maximum height and enable scrolling */
+    min-height: 30vh;
+    max-height: 60vh;
+
+    resize: both;
+    overflow-y: auto;
+    animation: slideIn 0.3s ease-in-out; /* Add the slideIn animation */
 }
 
 @keyframes slideIn {
-  0% {
-    top: 100%; /* Start below the screen */
-    opacity: 0; /* Hide the popup */
-  }
-  100% {
-    top: 50%; /* Move the popup to the center */
-    opacity: 1; /* Show the popup */
-    transform: translate(-50%, -50%) scale(1); /* Scale it to its original size */
-  }
+    0% {
+        top: 100%; /* Start below the screen */
+        opacity: 0; /* Hide the popup */
+    }
+    100% {
+        top: 50%; /* Move the popup to the center */
+        opacity: 1; /* Show the popup */
+        transform: translate(-50%, -50%) scale(1); /* Scale it to its original size */
+    }
 }
 
 .show-note-close-icon {
+    position: absolute;
+    top: 5%;
+    right: 5%;
+    outline: 2px solid;
+    width: 30px;
+    height: 60px;
 
-  position: absolute;
-  top:5%;
-  right: 5%;
-  outline: 2px solid;
-  width: 30px;
-  height: 60px;
-
-  border-radius: 15%; 
- 
-   
+    border-radius: 15%;
 }
 
 .show-note-close-icon:hover {
-
-
-padding: 0.35%;
-top: 5.5%;
-outline-color: orangered;
-background-color: orange;
- 
-  
-   
+    padding: 0.35%;
+    top: 5.5%;
+    outline-color: orangered;
+    background-color: orange;
 }
 
 .popup h1 {
-  position: absolute;
-  top:5%;
-  left: 10%;
-  font-size: 1.5rem;
-  margin-bottom: 20px;
-  
+    position: absolute;
+    top: 5%;
+    left: 10%;
+    font-size: 1.5rem;
+    margin-bottom: 20px;
 }
 
 .popup label {
- 
-  font-size: 1.2rem;  
+    font-size: 1.2rem;
 }
 
 .popup input,
 .popup textarea {
-  width: 100%;
-  padding: 8px;
-  font-size: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  margin-bottom: 15px;
-  margin-top: 5px;
+    width: 100%;
+    padding: 8px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    margin-top: 5px;
 }
 
 .popup textarea {
-  resize: vertical;
-  height: 100px;
+    resize: vertical;
+    height: 100px;
 }
 
 .popup-buttons {
-  display: flex;
-  justify-content: flex-end;
-  gap: 10px;
-  margin-top: 15px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 15px;
 }
 
 @keyframes ripple {
-  0% {
-    transform: scale(1);
-    opacity: 0.7;
-    box-shadow: 0 0 0 1px rgba(255, 165, 0, 0.7);
+    0% {
+        transform: scale(1);
+        opacity: 0.7;
+        box-shadow: 0 0 0 1px rgba(255, 165, 0, 0.7);
+    }
 
-    
-  }
+    25% {
+        transform: scale(1.1);
+        opacity: 0.7;
+        box-shadow: 0 0 3px 2px rgba(255, 165, 0, 0.7);
+    }
 
-  25% {
-    transform: scale(1.1);
-    opacity: 0.7;
-    box-shadow: 0 0 3px 2px rgba(255, 165, 0, 0.7);
-  
-  }
-  
-  50% {
-    transform: scale(1);
-    opacity: 0.7;
-    box-shadow: 0 0 6px 4px rgba(255, 165, 0, 0.7);
+    50% {
+        transform: scale(1);
+        opacity: 0.7;
+        box-shadow: 0 0 6px 4px rgba(255, 165, 0, 0.7);
+    }
 
-  }
+    75% {
+        transform: scale(1.1);
+        opacity: 0.7;
+        box-shadow: 0 0 10px 7px rgba(255, 165, 0, 0.7);
+    }
 
-  75% {
-    transform: scale(1.1);
-    opacity: 0.7;
-    box-shadow: 0 0 10px 7px rgba(255, 165, 0, 0.7);
-
-  }
-
-  100% {
-    transform: scale(1);
-    opacity: 0.7;
-    box-shadow: 0 0 15px 10px rgba(255, 165, 0, 0.7);
-
-  }
+    100% {
+        transform: scale(1);
+        opacity: 0.7;
+        box-shadow: 0 0 15px 10px rgba(255, 165, 0, 0.7);
+    }
 }
 
 @keyframes blink {
-  0% { opacity: 1; }
-  50% { opacity: 0; }
-  100% { opacity: 1; }
+    0% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
 }
 
-
-
 .save-button {
-  position: absolute;
-  cursor: pointer;
-  border-radius: 15%; 
-  top: 5%;
-  right: 12%;
+    position: absolute;
+    cursor: pointer;
+    border-radius: 15%;
+    top: 5%;
+    right: 12%;
 
-  outline-offset: 10px; /* Move the outline 10 pixels away from the element */
+    outline-offset: 10px; /* Move the outline 10 pixels away from the element */
 
-  animation: blink 2s infinite, ripple 2s ease-out infinite; /* Apply both blink and ripple animations to the button */
-  background-color: orange; /* Initial background color */
-
+    animation: blink 2s infinite, ripple 2s ease-out infinite; /* Apply both blink and ripple animations to the button */
+    background-color: orange; /* Initial background color */
 }
 
 .save-button:hover {
-  animation: none; 
+    animation: none;
 
-  transform: scale(1.2); /* Apply a scale transformation to create a larger size on hover */
-  box-shadow: 0 0 20px 2px rgba(255, 165, 0, 0.7); /* Add a subtle shadow effect on hover */
-  transition: transform 0.5s ease-in-out; /* Add a smooth transition effect on hover */
+    transform: scale(
+        1.2
+    ); /* Apply a scale transformation to create a larger size on hover */
+    box-shadow: 0 0 20px 2px rgba(255, 165, 0, 0.7); /* Add a subtle shadow effect on hover */
+    transition: transform 0.5s ease-in-out; /* Add a smooth transition effect on hover */
 }
-
 
 .dashboard {
-  display: flex; 
-  padding-left: 15%;
-  padding-right: 15%;
-  justify-content: space-between;
+    display: flex;
+    padding-left: 15%;
+    padding-right: 15%;
+    justify-content: space-between;
 }
 
-
-
 .counter {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .counter-label {
-  font-weight: bold;
+    font-weight: bold;
 }
 
 .counter-value {
-  position: relative;
-  left: 10px; 
-  font-size: 36px;
-  font-weight: bold;
-  color: #007bff;
+    position: relative;
+    left: 10px;
+    font-size: 36px;
+    font-weight: bold;
+    color: #007bff;
 }
 
 /* Add blinking animation */
 @keyframes blink {
-  0%, 100% {
-    opacity: 0.5;
-  }
-  50% {
-    opacity: 1;
-    transform: scale(1.005);
-  }
+    0%,
+    100% {
+        opacity: 0.5;
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.005);
+    }
 }
 
 .skeleton-note {
-  height: 140px;
-  background: linear-gradient(90deg, #ff9c00, #ffb966); /* Light and dark orange colors */
-  background-size: 200% 100%; /* Increase the background size for animation effect */
-  animation: blink 2s infinite; /* Apply the blinking animation */
+    height: 140px;
+    background: linear-gradient(
+        90deg,
+        #ff9c00,
+        #ffb966
+    ); /* Light and dark orange colors */
+    background-size: 200% 100%; /* Increase the background size for animation effect */
+    animation: blink 2s infinite; /* Apply the blinking animation */
 }
 
 .skeleton-title {
-  width: 95%;
-  height: 20px;
-  background-color: #e0e0e0;
-  margin: 8px 0;
+    width: 95%;
+    height: 20px;
+    background-color: #e0e0e0;
+    margin: 8px 0;
 }
 
 .skeleton-content {
-  width: 95%;
-  height: 100px;
-  background-color: #e0e0e0;
-  margin: 8px 0;
+    width: 95%;
+    height: 100px;
+    background-color: #e0e0e0;
+    margin: 8px 0;
 }
