@@ -5,6 +5,8 @@ import axios from "axios";
 import { toast } from "react-toastify";
 
 const ContactForm = () => {
+    const BASE_URL = process.env.REACT_APP_BASE_URL;
+
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [phoneNumber, setPhoneNumber] = useState("");
@@ -50,6 +52,7 @@ const ContactForm = () => {
             return;
         }
 
+        const url = `${BASE_URL}contact/email`;
         // Create a data object to send to the backend
         const formData = {
             firstName,
@@ -61,10 +64,7 @@ const ContactForm = () => {
 
         // Send the form data to the backend
         try {
-            const response = await axios.post(
-                "{process.env.REACT_APP_BASE_URL}contact/email",
-                formData
-            );
+            const response = await axios.post(url, formData);
 
             if (response.status === 200) {
                 console.log("Email sent successfully!");
