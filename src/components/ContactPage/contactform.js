@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { TextField, TextareaAutosize, Button } from "@mui/material";
+import { TextField, Button } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import axios from "axios";
 import { toast } from "react-toastify";
@@ -24,26 +24,37 @@ const ContactForm = () => {
     const isFormValid = !isFormEmpty && isPhoneNumberValid && isEmailValid;
 
     const validatePhoneNumber = (value) => {
-        if (!/^\+\d{1,3} \d{3} \d{3} \d{4}$/.test(value)) {
-            setPhoneNumberError(
-                "Please enter a valid phone number with the format +XX XXX XXX XXXX"
-            );
+        if (value.length > 0) {
+            // Check if value is not empty
+            if (!/^\+\d{1,3} \d{3} \d{3} \d{4}$/.test(value)) {
+                setPhoneNumberError(
+                    "Please enter a valid phone number with the format +X XXX XXX XXXX"
+                );
+            } else {
+                setPhoneNumberError(""); // Clear error when the phone number is valid
+            }
         } else {
-            setPhoneNumberError("");
+            setPhoneNumberError(""); // Clear error when the field is empty
         }
     };
 
     const validateEmail = (value) => {
-        if (!/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/.test(value)) {
-            setEmailError("Please enter a valid email address");
+        if (value.length > 0) {
+            // Check if value is not empty
+            if (
+                !/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/.test(value)
+            ) {
+                setEmailError("Please enter a valid email address");
+            } else {
+                setEmailError(""); // Clear error when the email is valid
+            }
         } else {
-            setEmailError("");
+            setEmailError(""); // Clear error when the field is empty
         }
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
         // Validate phone number and email before submitting
         validatePhoneNumber(phoneNumber);
         validateEmail(email);
@@ -67,7 +78,6 @@ const ContactForm = () => {
             const response = await axios.post(url, formData);
 
             if (response.status === 200) {
-                console.log("Email sent successfully!");
                 toast.success("Email sent! ");
                 // Clear form fields
                 setFirstName("");

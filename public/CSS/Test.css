@@ -43,10 +43,13 @@
 }
 
 .get-in-touch {
+    position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
     height: auto;
+    width: 60%;
+    left: 20%;
     padding: 20px;
     background-color: white;
     border-radius: 30px;
@@ -83,4 +86,86 @@
     margin-top: 30px;
     justify-content: center;
     width: 100%;
+}
+
+.about-page header {
+    background-color: transparent;
+}
+
+.about-title {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: auto;
+    width: fit-content;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 30px;
+    background-color: white;
+    border-radius: 30px;
+    box-shadow: 10px 10px 0px orange;
+}
+
+.timeline-vertical-circle {
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+    height: 40px;
+    width: 40px;
+    outline: 3px dashed;
+    border-radius: 50%;
+}
+
+.timelines {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 60px 80px 50px;
+}
+
+.timeline {
+    font-family: "Calibri";
+    max-width: 1200px;
+    width: 100%;
+    margin: 30px;
+}
+.timeline img {
+    object-fit: contain; /* Maintain the aspect ratio and fit within the container */
+}
+
+.timeline-certificate header {
+    box-shadow: none;
+    height: 0;
+}
+
+.timeline-certificate h1,
+.timeline-certificate h2 {
+    font-size: 15px;
+    margin: 0;
+    padding: 0;
+    font-family: Calibri Light;
+}
+
+.timeline-certificate div {
+    font-size: 20px;
+}
+
+.timeline-certificate h2 {
+    margin-left: 18px;
+}
+
+.MuiAccordion-gutters {
+    outline: 1px solid;
+    outline-color: orange;
+    padding: 15px;
+}
+
+.MuiAccordion-gutters:hover {
+    outline: 3px solid orange;
+    transition: 0.5s ease;
+    position: relative;
+    bottom: 5px;
+    outline-offset: 5px;
 }

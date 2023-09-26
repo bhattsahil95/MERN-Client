@@ -19,6 +19,7 @@
         "particles.js": "^2.0.0",
         "react": "^18.2.0",
         "react-beautiful-dnd": "^13.1.1",
+        "react-chrono": "^2.2.4",
         "react-dom": "^18.2.0",
         "react-icons-kit": "^2.0.0",
         "react-phone-input-2": "^2.15.1",
@@ -35,6 +36,10 @@
         "web-vitals": "^2.1.4",
         "zustand": "^4.3.9"
     },
+    "devDependencies": {
+        "@babel/plugin-proposal-private-property-in-object": "^7.16.7"
+    },
+    
     "scripts": {
         "start": "react-scripts start",
         "build": "react-scripts build",
