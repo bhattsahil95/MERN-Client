@@ -4,7 +4,7 @@ import noteStore from "../../noteStore";
 import Message from "./Helper/message";
 
 function Header({ selectedOption, setSelectedOption }) {
-    const options = [2, 3, 5, 10, 20, 50, 100];
+    const options = [5, 10, 20, 50, 100];
     const { setNotePageOne } = noteStore();
 
     const handleDropdownChange = (event) => {
@@ -16,10 +16,9 @@ function Header({ selectedOption, setSelectedOption }) {
     return (
         <header>
             <div className="notespage-header">
-                <h1>Personal Note Book</h1>
-                <div className="notes-per-page-input">
-                    <h5>Notes per Page : </h5>
+                <h3>Personal Note Book</h3>
 
+                <div className="notes-per-page-input">
                     <Dropdown
                         selectedValue={selectedOption}
                         options={options}
@@ -27,12 +26,14 @@ function Header({ selectedOption, setSelectedOption }) {
                     />
                 </div>
             </div>
-            <Message
-                title={"TAKING TOO LONG TO LOAD?"}
-                msg={
-                    "Please note, I am using free service. It might take some time to cook up my backend.! "
-                }
-            />
+            <div className="notes-info">
+                <Message
+                    title={"TAKING TOO LONG TO LOAD?"}
+                    msg={
+                        "Please note, I am using free service. It might take some time to cook up my backend.! "
+                    }
+                />
+            </div>
         </header>
     );
 }

@@ -112,20 +112,24 @@ footer p {
     position: relative;
     float: right;
     margin-left: 90%;
-
+    color: black;
     border: 1px solid;
     width: 55px;
     height: 26px;
     cursor: pointer;
     outline: none;
     border-width: 100%;
-
     background-color: transparent;
     border-radius: 20%;
     transition-property: transform, background-color;
     transition-duration: 0.5s;
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Add the box shadow */
+}
+
+.note-delete svg {
+    position: relative;
+    bottom: 7px;
 }
 
 .note .time-stamp {
@@ -185,6 +189,11 @@ footer p {
     justify-content: space-between;
     margin-right: 5%;
     align-items: center;
+}
+
+.notes-info {
+    position: relative;
+    bottom: 15px;
 }
 
 .notes-per-page-input {

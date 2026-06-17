@@ -38,6 +38,11 @@ function Navigation() {
                     <NavLink to="/apiserver" activeClassName="active">
                         API Server
                     </NavLink>
+                </li>{" "}
+                <li>
+                    <NavLink to="/chatroom" activeClassName="active">
+                        Chat room
+                    </NavLink>
                 </li>
             </ul>
             <div className="socials">

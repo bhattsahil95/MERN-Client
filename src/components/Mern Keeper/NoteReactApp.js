@@ -7,11 +7,12 @@ import { toast } from "react-toastify";
 function NoteReactApp() {
     const defaultNotesPerPage = 10;
     const [selectedOption, setSelectedOption] = useState(defaultNotesPerPage);
-    const socket = io(process.env.REACT_APP_BASE_URL);
+    const socket = io(`${process.env.REACT_APP_BASE_URL}mern-notes`);
 
     useEffect(() => {
+        socket.emit("message", { sourcePage: "/notes" });
         socket.on("testRoute", () => {
-            toast.info("Excellent");
+            toast.info("Excellent. Test Router is Working");
         });
 
         socket.on("message", () => {

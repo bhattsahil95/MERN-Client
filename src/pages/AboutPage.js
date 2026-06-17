@@ -37,6 +37,7 @@ const AboutPage = () => {
 
     return (
         <div>
+            {" "}
             <div className="about-page">
                 <div className="about-title ">
                     <h3>
@@ -44,6 +45,7 @@ const AboutPage = () => {
                         Technology.
                     </h3>
                 </div>
+
                 <div className="timelines">
                     {accordionData.map((item, index) => (
                         <div className={`timeline ${item.class}`} key={index}>
