@@ -12,7 +12,8 @@ function NoteReactApp() {
   const [selectedOption, setSelectedOption] = useState(defaultNotesPerPage);
 
   return (
-    <div className="notes-container">
+    <div className="notes-app">
+      <div className="notes-container">
       <Header  selectedOption={selectedOption} setSelectedOption={setSelectedOption}/>
 
      
@@ -23,6 +24,7 @@ function NoteReactApp() {
 
 
       
+    </div>
     </div>
   );
 }

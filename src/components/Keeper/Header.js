@@ -17,11 +17,11 @@ function Header( {selectedOption, setSelectedOption} ) {
 
 
   return (
-    <header>
+    <header className="notes-app-header">
     <div className="notespage-header">
-      <h1>Personal Note Book</h1>
+      <h1 className="notes-app-header__title">Keeper Notes</h1>
       <div className="notes-per-page-input">
-      <h2>Notes per Page : </h2>
+      <span className="notes-per-page-input__label">Notes per page</span>
      
       <Dropdown selectedValue={selectedOption} options={options} onChange={handleDropdownChange} />
      

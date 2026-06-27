@@ -4,13 +4,26 @@ import BasicSelect from '../components/ApiPage/Dropdown';
 import LinearProgress from '@mui/material/LinearProgress';
 import debounce from 'lodash/debounce';
 import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';import ListItemText from '@mui/material/ListItemText';
+import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItemText';
 import ListItemButton from '@mui/material/ListItemButton';
+import ProjectPageHeader from '../components/ProjectPageHeader';
+import projects from '../assets/projectsData';
 
+const project = projects.find((p) => p.id === 'weather-api');
 
+const progressSx = {
+  height: 3,
+  borderRadius: 2,
+  backgroundColor: 'rgba(255,255,255,0.06)',
+  '& .MuiLinearProgress-bar': {
+    backgroundColor: '#ff8c00',
+    transitionDuration: '8s',
+  },
+};
 
-function MyComponent() {
-  const API_KEY = process.env.REACT_APP_WEATHER_API_KEY; 
+function ApiPage() {
+  const API_KEY = process.env.REACT_APP_WEATHER_API_KEY;
   const units = 'Metric';
   const API_COUNT_LIMIT = 5;
 
@@ -19,29 +32,26 @@ function MyComponent() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [isRawDataVisible, setIsRawDataVisible] = useState(false);
-  const [cityCount, setCityCount] = useState(0)
-  const [cityCountLimt, setCityCountLimit] = useState(false)
-  const [cityHistory, setCityHistory] = useState([])
+  const [cityCount, setCityCount] = useState(0);
+  const [cityCountLimt, setCityCountLimit] = useState(false);
+  const [cityHistory, setCityHistory] = useState([]);
   const [selectedButton, setSelectedButton] = useState(null);
-  const [newApi, setNewApi] =useState(true);
-  
+  const [newApi, setNewApi] = useState(true);
 
   const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&APPID=${API_KEY}&units=${units}`;
 
   const fetchData = async () => {
     setIsLoading(true);
-    // setError('');
 
     try {
       const response = await axios.get(url);
       setData(response.data);
-      setCityCount((previous) => previous + 1)
+      setCityCount((previous) => previous + 1);
       setCityHistory((previous) => [...previous, response.data]);
-      //City Count Limit 
-      if (cityCount >= API_COUNT_LIMIT -1) {
+      if (cityCount >= API_COUNT_LIMIT - 1) {
         setCityCountLimit(true);
-  }
-    } catch (error) {
+      }
+    } catch (err) {
       setError('Please enter a valid city');
       setData(null);
     }
@@ -49,34 +59,19 @@ function MyComponent() {
     setIsLoading(false);
   };
 
-  
-
-  // Debounce the fetchData function to delay the API request
   const debouncedFetchData = debounce(fetchData, 500);
-
-
-  // Check if Already Searched in the Past 
-
-
-  
-
-
-
 
   useEffect(() => {
     if (city.trim() !== '') {
       if (data === null || data.name.toLowerCase() !== city.toLowerCase()) {
-         if (newApi && !cityCountLimt) {
+        if (newApi && !cityCountLimt) {
           debouncedFetchData();
-         } else {
-          const historyData = cityHistory.filter((data) => data.name === city)
-          setData(historyData[0] || 'Error Occured! ')
-         }
-
-       
+        } else {
+          const historyData = cityHistory.filter((item) => item.name === city);
+          setData(historyData[0] || 'Error Occured! ');
+        }
       }
-    }
-    else {
+    } else {
       setIsLoading(false);
       setData(null);
       setError('');
@@ -89,7 +84,7 @@ function MyComponent() {
 
   const handleCityChange = (enteredCity) => {
     setCity(enteredCity);
-  
+
     if (enteredCity.trim() === '') {
       setIsLoading(false);
       setData(null);
@@ -118,136 +113,134 @@ function MyComponent() {
       }
     }
   };
-  
 
-  const formatTemperature = (temperature) => {
-    return `${temperature}°C`;
-  };
+  const formatTemperature = (temperature) => `${temperature}°C`;
 
   const formatTime = (timestamp) => {
     const date = new Date(timestamp * 1000);
     return date.toLocaleTimeString([], { timeStyle: 'short' });
   };
 
-  const toggleRawDataVisibility = () => {
-    setIsRawDataVisible(!isRawDataVisible);
+  const handleListClick = (item) => {
+    setCity(item.name);
+    setIsLoading(false);
+    setData(item);
+    setSelectedButton(item);
   };
 
-  const handleListClick = (data) => {
-    setCity(data.name);
-    setIsLoading(false);
-    setData(data);
-    setSelectedButton(data);
-   
-    
-  }
-
   return (
-    <div>
-    <div className='all-api-page'>
-    <div className='api-page'>
-      <h1>Enter a city:</h1>
-      <br />
-      <div className='api-limit-box'>
-      <h4>Total City Searches : {cityCount}</h4>
-      <h4> Search LIMIT : {API_COUNT_LIMIT}</h4>
-      </div>
-      <br />
-      {cityCountLimt && (<h4> ! ------- You Have reached the limit ------- !  </h4>)}
-      <br />
-      { !cityCountLimt && <BasicSelect onChange={handleCityChange} />}
-      <br />
-      {/* Display the fetched data or error message */}
-      {isLoading && (
-        <LinearProgress
-          sx={{
-            '& .MuiLinearProgress-bar': {
-              transitionDuration: '8s', // Adjust the duration as per your requirement
-            },
-          }}
-        />
-      )}
-      {error && !isLoading && (
-        <div>
-          <LinearProgress
-            sx={{
-              '& .MuiLinearProgress-bar': {
-                transitionDuration: '8s', // Adjust the duration as per your requirement
-              },
-            }}
-          />
-          {error}
-        </div>
-      )}
-      {data && !isLoading && (
-        <div>
-          <div className='api-data-display'>
-            <div className='box-1'>
-              <h2>{data.name}</h2>
-              <p>Current Temperature: {formatTemperature(data.main.temp)}</p>
-              <p>Feels Like: {formatTemperature(data.main.feels_like)}</p>
-              <p>Description: {data.weather[0].description}</p>
-              <p>Wind Speed: {data.wind.speed} km/h</p>
-              <p>Humidity: {data.main.humidity}%</p>
-              <p>Sunrise: {formatTime(data.sys.sunrise)}</p>
-              <p>Sunset: {formatTime(data.sys.sunset)}</p>
-              <p>Country: {data.sys.country}</p>
-            </div>
-            <div className='box-2'>
-              <img
-                src={`https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`}
-                style={{ width: '300px', height: 'auto' }}
-              />
-            </div>
+    <div className="weather-api">
+      <ProjectPageHeader
+        title={project.title}
+        description={project.description}
+        tech={project.tech}
+      />
+
+      <div className="weather-api__layout">
+        <div className="weather-api__main">
+          <p className="weather-api__controls-label">Search a city</p>
+
+          <div className="weather-api__stats">
+            <span className="weather-api__stat">
+              Searches: <strong>{cityCount}</strong>
+            </span>
+            <span className="weather-api__stat">
+              Limit: <strong>{API_COUNT_LIMIT}</strong>
+            </span>
           </div>
-          <br />
-          <br />
-          <button className='api-button' onClick={toggleRawDataVisibility} style={{ cursor: 'pointer' }}>
-            {isRawDataVisible ? 'Hide Raw Data ▲' : 'Show Raw Data ▼ '}
-          </button>
-          {isRawDataVisible && (
-            <div className='raw-data'>
-              <br />
-              <br />
-              <pre>{JSON.stringify(data, null, 2)}</pre>
+
+          {cityCountLimt && (
+            <p className="weather-api__limit-notice">
+              Search limit reached — select a city from history.
+            </p>
+          )}
+
+          {!cityCountLimt && <BasicSelect onChange={handleCityChange} />}
+
+          {isLoading && <LinearProgress sx={progressSx} />}
+
+          {error && !isLoading && (
+            <div className="weather-api__error">{error}</div>
+          )}
+
+          {data && !isLoading && typeof data === 'object' && (
+            <div className="weather-api__result">
+              <div className="weather-api__card">
+                <div>
+                  <h2 className="weather-api__city">{data.name}</h2>
+                  <div className="weather-api__details">
+                    <p>Temperature: <span>{formatTemperature(data.main.temp)}</span></p>
+                    <p>Feels like: <span>{formatTemperature(data.main.feels_like)}</span></p>
+                    <p>Conditions: <span>{data.weather[0].description}</span></p>
+                    <p>Wind: <span>{data.wind.speed} km/h</span></p>
+                    <p>Humidity: <span>{data.main.humidity}%</span></p>
+                    <p>Sunrise: <span>{formatTime(data.sys.sunrise)}</span></p>
+                    <p>Sunset: <span>{formatTime(data.sys.sunset)}</span></p>
+                    <p>Country: <span>{data.sys.country}</span></p>
+                  </div>
+                </div>
+                <div className="weather-api__icon">
+                  <img
+                    src={`https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`}
+                    alt={data.weather[0].description}
+                  />
+                </div>
+              </div>
+
+              <div className="weather-api__toggle">
+                <button
+                  type="button"
+                  className="api-button"
+                  onClick={() => setIsRawDataVisible((prev) => !prev)}
+                >
+                  {isRawDataVisible ? 'Hide raw JSON ▲' : 'Show raw JSON ▼'}
+                </button>
+              </div>
+
+              {isRawDataVisible && (
+                <div className="weather-api__raw">
+                  <pre>{JSON.stringify(data, null, 2)}</pre>
+                </div>
+              )}
             </div>
           )}
-          <br />
-          <br />
         </div>
-      )}
 
-     
+        <aside className="weather-api__sidebar">
+          <h2 className="weather-api__sidebar-title">Search history</h2>
+          <p className="weather-api__sidebar-hint">Click to revisit</p>
+
+          {cityHistory.map((item) => (
+            <List key={item.id || item.name} disablePadding>
+              <ListItem disablePadding>
+                <ListItemButton
+                  className={`weather-api__history-item ${
+                    selectedButton && selectedButton.name === item.name
+                      ? 'selected'
+                      : ''
+                  }`}
+                  onClick={() => handleListClick(item)}
+                >
+                  <ListItemText
+                    primary={item.name}
+                    secondary={`${item.main.temp}°C`}
+                    primaryTypographyProps={{
+                      fontFamily: 'var(--font-mono)',
+                      fontSize: '0.8125rem',
+                    }}
+                    secondaryTypographyProps={{
+                      fontFamily: 'var(--font-mono)',
+                      fontSize: '0.75rem',
+                    }}
+                  />
+                </ListItemButton>
+              </ListItem>
+            </List>
+          ))}
+        </aside>
       </div>
-      <div className="search-history">
-        <h2>Search History</h2>
-          <br />
-          <p style={{ textAlign: 'center' }}>Click to go back!</p>
-
-        
-        {cityHistory.map((data) => (
-
-          <List>
-            <ListItem>
-              <ListItemButton
-                className={`item-button ${ selectedButton && selectedButton.name === data.name ? 'selected' : 'not-selected'}`}
-                onClick={() => handleListClick(data)}
-              >
-                <ListItemText primary={data.name} secondary={data.main.temp} />
-              </ListItemButton>
-            </ListItem>
-          </List>
-
-
-
-        ) )}
-       
-        
-      </div>
-      </div>
-
     </div>
   );
 }
 
-export default MyComponent;
+export default ApiPage;

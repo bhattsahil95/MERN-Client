@@ -1,70 +1,49 @@
 import React, { useState } from "react";
-import {
-    Accordion,
-    AccordionDetails,
-    AccordionSummary,
-    Typography,
-} from "@mui/material";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import TimelineComponent from "../components/AboutPage/timeline";
+import ExperienceTimeline from "../components/AboutPage/ExperienceTimeline";
 import PFitems from "../assets/professionalData.js";
 import { educationData, certificationData } from "../assets/educationData.js";
 
-const accordionData = [
-    {
-        title: "PROFESSIONAL JOURNEY",
-        class: "timeline-professional",
-        content: <TimelineComponent data={PFitems} />,
-    },
-    {
-        title: "EDUCATIONAL JOURNEY",
-        class: "timeline-educational",
-        content: <TimelineComponent data={educationData} />,
-    },
-    {
-        title: "CERTIFICATIONS",
-        class: "timeline-certificate",
-        content: <TimelineComponent data={certificationData} />,
-    },
+const TABS = [
+    { id: "professional", label: "Experience", data: PFitems },
+    { id: "education", label: "Education", data: educationData },
+    { id: "certifications", label: "Certifications", data: certificationData },
 ];
 
 const AboutPage = () => {
-    const [expandedIndex, setExpandedIndex] = useState(null);
-
-    const handleAccordionChange = (index) => {
-        setExpandedIndex(index === expandedIndex ? null : index);
-    };
+    const [activeTab, setActiveTab] = useState("professional");
+    const current = TABS.find((tab) => tab.id === activeTab);
 
     return (
-        <div>
-            {" "}
-            <div className="about-page">
-                <div className="about-title ">
-                    <h3>
-                        A finance professional with a keen passion for
-                        Technology.
-                    </h3>
-                </div>
+        <div className="about-page">
+            <p className="section-label">// about</p>
+            <div className="about-hero">
+                <h1 className="about-hero__title">
+                    Finance × Technology
+                </h1>
+                <p className="about-hero__text">
+                    I am a finance professional with a deep passion for building
+                    software — dashboards, APIs, and tools that make businesses
+                    run smarter.
+                </p>
+            </div>
 
-                <div className="timelines">
-                    {accordionData.map((item, index) => (
-                        <div className={`timeline ${item.class}`} key={index}>
-                            <Accordion
-                                expanded={expandedIndex === index}
-                                onChange={() => handleAccordionChange(index)}
-                            >
-                                <AccordionSummary
-                                    expandIcon={<ExpandMoreIcon />}
-                                >
-                                    <Typography>{item.title}</Typography>
-                                </AccordionSummary>
-                                <AccordionDetails>
-                                    {item.content}
-                                </AccordionDetails>
-                            </Accordion>
-                        </div>
-                    ))}
-                </div>
+            <div className="about-tabs" role="tablist" aria-label="About sections">
+                {TABS.map((tab) => (
+                    <button
+                        key={tab.id}
+                        type="button"
+                        role="tab"
+                        aria-selected={activeTab === tab.id}
+                        className={`about-tab${activeTab === tab.id ? " about-tab--active" : ""}`}
+                        onClick={() => setActiveTab(tab.id)}
+                    >
+                        {tab.label}
+                    </button>
+                ))}
+            </div>
+
+            <div className="about-timeline-wrap" role="tabpanel">
+                <ExperienceTimeline data={current.data} />
             </div>
         </div>
     );

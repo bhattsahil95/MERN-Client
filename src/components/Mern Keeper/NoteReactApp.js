@@ -25,13 +25,15 @@ function NoteReactApp() {
     }, [socket]);
 
     return (
-        <div className="notes-container">
+        <div className="notes-app">
+            <div className="notes-container">
             <Header
                 selectedOption={selectedOption}
                 setSelectedOption={setSelectedOption}
             />
 
             <NotesList selectedOption={selectedOption} socket={socket} />
+            </div>
         </div>
     );
 }

@@ -36,6 +36,10 @@ const routes = [
         component: ServerApi,
     },
     {
+        path: "/apiserver",
+        component: ServerApi,
+    },
+    {
         path: "/mern-notes",
         component: MernNotes,
     },

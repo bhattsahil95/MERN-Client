@@ -9,32 +9,33 @@ import Footer from "../src/components/Keeper/Footer";
 
 function App() {
     return (
-        <div>
-            <ToastContainer
-                autoClose={2000} // Optional: Set the autoClose duration in milliseconds
-                newestOnTop // Optional: Display the newest toast on top
-                closeOnClick // Optional: Close the toast when clicked
-                rtl={false} // Optional: Set to true for right-to-left languages
-                pauseOnFocusLoss // Optional: Pause toast when the window loses focus
-                draggable // Optional: Allow dragging the toast
-                pauseOnHover // Optional: Pause toast when hovering over it
-            />
-            <Router>
+        <Router>
+            <div className="app-shell">
+                <ToastContainer
+                    autoClose={2000}
+                    newestOnTop
+                    closeOnClick
+                    rtl={false}
+                    pauseOnFocusLoss
+                    draggable
+                    pauseOnHover
+                    theme="colored"
+                />
                 <Navigation />
-                <Routes>
-                    {console.log(routes)}
-                    {console.log("Working")}
-                    {routes.map((route) => (
-                        <Route
-                            key={route.path}
-                            path={route.path}
-                            element={<route.component />}
-                        />
-                    ))}
-                </Routes>
-            </Router>
-            <Footer />
-        </div>
+                <main className="app-main">
+                    <Routes>
+                        {routes.map((route) => (
+                            <Route
+                                key={route.path}
+                                path={route.path}
+                                element={<route.component />}
+                            />
+                        ))}
+                    </Routes>
+                </main>
+                <Footer />
+            </div>
+        </Router>
     );
 }
 

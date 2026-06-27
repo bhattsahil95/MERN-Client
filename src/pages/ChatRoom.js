@@ -10,6 +10,10 @@ import CreateRoom from "../components/ChatRoom/CreateRoom.js";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import GroupChat from "../components/ChatRoom/GroupChat.js";
+import ProjectPageHeader from "../components/ProjectPageHeader";
+import projects from "../assets/projectsData";
+
+const project = projects.find((p) => p.id === "chatroom");
 
 const ChatRoom = () => {
     const {
@@ -249,7 +253,12 @@ const ChatRoom = () => {
     };
 
     return (
-        <div>
+        <div className="chat-app">
+            <ProjectPageHeader
+                title={project.title}
+                description={project.description}
+                tech={project.tech}
+            />
             {alertMessage && (
                 <div className="alert-message">
                     {alertMessage}
@@ -259,9 +268,6 @@ const ChatRoom = () => {
                 </div>
             )}
             <div className="chat-container">
-                <h1 className="chat-room-title">
-                    Welcome to the anonymous chat !
-                </h1>
                 {chatRequestPending && (
                     <div
                         className="pending-progress-bar request-pending"
@@ -304,7 +310,7 @@ const ChatRoom = () => {
                         </form>
                     ) : (
                         <div>
-                            <div class="user-info">
+                            <div className="user-info">
                                 <span>Chat ID: {chatId}</span>
                                 <span>Active Users: {userCount}</span>
                                 <span>User Name: {userName}</span>
@@ -316,25 +322,25 @@ const ChatRoom = () => {
                                 </form>
                             </div>
 
-                            <div class="create-rooms">
-                                <div class="create-options">
+                            <div className="create-rooms">
+                                <div className="create-options">
                                     <button
                                         onClick={handleCreateOpenRoom}
-                                        class="create-btn open"
+                                        className="create-btn open"
                                     >
                                         Create Open Room
                                     </button>
                                     <button
                                         onClick={handleCreatePrivateRoom}
-                                        class="create-btn private"
+                                        className="create-btn private"
                                     >
                                         Create Private Room
                                     </button>
                                 </div>
                             </div>
 
-                            <div class="room-container">
-                                <div class="existing-rooms room-card">
+                            <div className="room-container">
+                                <div className="existing-rooms room-card">
                                     <h2>Existing Rooms</h2>
                                     <div className="room-list">
                                         {rooms.map((room, index) => (

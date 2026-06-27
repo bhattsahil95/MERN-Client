@@ -67,15 +67,15 @@ function CreateArea(props) {
           color="primary"
           onClick={handleNoteSubmit}
           sx={{
-            backgroundColor: "#f5ba13",
+            backgroundColor: "#ff8c00",
             "&:hover": {
-              backgroundColor: "darkorange",
-              transform: "scale(1.15)",
-              transition: "transform 0.3s ease"
+              backgroundColor: "#e07b00",
+              transform: "scale(1.08)",
+              transition: "transform 0.2s ease"
             }
           }}
         >
-          <AddIcon sx={{ color: "black" }} />
+          <AddIcon sx={{ color: "#09090b" }} />
         </Fab>
       </Zoom>
       {/* </form> */}

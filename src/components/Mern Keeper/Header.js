@@ -14,9 +14,9 @@ function Header({ selectedOption, setSelectedOption }) {
     };
 
     return (
-        <header>
+        <header className="notes-app-header">
             <div className="notespage-header">
-                <h3>Personal Note Book</h3>
+                <h1 className="notes-app-header__title">MERN Notes</h1>
 
                 <div className="notes-per-page-input">
                     <Dropdown

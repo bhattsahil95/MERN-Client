@@ -24,6 +24,24 @@ export default function BasicSelect(props) {
           label="City"
           value={city}
           onChange={handleChange}
+          variant="outlined"
+          size="small"
+          sx={{
+            '& .MuiOutlinedInput-root': {
+              fontFamily: 'var(--font-mono)',
+              fontSize: '0.875rem',
+              color: 'var(--color-text)',
+              '& fieldset': { borderColor: 'rgba(255,255,255,0.12)' },
+              '&:hover fieldset': { borderColor: 'rgba(255,255,255,0.2)' },
+              '&.Mui-focused fieldset': { borderColor: '#ff8c00' },
+            },
+            '& .MuiInputLabel-root': {
+              fontFamily: 'var(--font-mono)',
+              fontSize: '0.8125rem',
+              color: 'rgba(255,255,255,0.45)',
+              '&.Mui-focused': { color: '#ff8c00' },
+            },
+          }}
         />
       </FormControl>
     </Box>

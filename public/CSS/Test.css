@@ -1,171 +1,316 @@
 .about-page {
-    margin: 20px;
-    padding: 20px;
-    background-color: #f7f7f7;
-    border-radius: 10px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    max-width: var(--max-content);
+    margin: 0 auto;
+    padding: 3rem 0;
 }
 
-.hero {
-    text-align: center;
-    margin-bottom: 20px;
+.about-hero {
+    margin-bottom: 2.5rem;
+    padding-bottom: 2.5rem;
+    border-bottom: 1px solid var(--color-border);
 }
 
-.section-title {
-    font-size: 18px;
-    font-weight: bold;
-    margin-top: 20px;
+.about-hero__title {
+    margin: 0 0 0.75rem;
+    font-size: clamp(1.75rem, 4vw, 2.25rem);
+    font-weight: 700;
+    letter-spacing: -0.03em;
 }
 
-.social-links img,
-.languages-tools img {
-    width: 80px;
-    height: 80px;
-    margin: 5px;
-    transition: transform 0.3s ease, filter 0.3s ease;
+.about-hero__text {
+    margin: 0;
+    max-width: 560px;
+    font-size: 0.9375rem;
+    line-height: 1.75;
+    color: var(--color-text-secondary);
 }
 
-.social-links img:hover,
-.languages-tools img:hover {
-    transform: scale(1.1);
-    filter: drop-shadow(0 0 2px orange);
+.about-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.375rem;
+    margin-bottom: 2rem;
 }
+
+.about-tab {
+    padding: 0.5rem 0.875rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    background: transparent;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--color-text-muted);
+    cursor: pointer;
+    transition: color 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+}
+
+.about-tab:hover {
+    color: var(--color-text-secondary);
+    border-color: var(--color-border-strong);
+}
+
+.about-tab--active {
+    color: var(--color-text);
+    border-color: var(--color-border-strong);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.about-timeline-wrap {
+    padding: 0.5rem 0;
+}
+
+/* ── Experience timeline ── */
+
+.experience-timeline {
+    display: flex;
+    flex-direction: column;
+}
+
+.experience-item {
+    display: grid;
+    grid-template-columns: 24px 1fr;
+    gap: 1.25rem;
+}
+
+.experience-item__track {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 0.35rem;
+}
+
+.experience-item__dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: 2px solid var(--color-accent);
+    background: var(--color-bg);
+    flex-shrink: 0;
+}
+
+.experience-item__line {
+    flex: 1;
+    width: 1px;
+    min-height: 2rem;
+    margin-top: 0.5rem;
+    background: var(--color-border);
+}
+
+.experience-item__body {
+    padding-bottom: 2.5rem;
+}
+
+.experience-item--last .experience-item__body {
+    padding-bottom: 0;
+}
+
+.experience-item__date {
+    display: block;
+    margin-bottom: 0.375rem;
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    font-weight: 500;
+    color: var(--color-accent);
+    letter-spacing: 0.02em;
+}
+
+.experience-item__role {
+    margin: 0 0 0.25rem;
+    font-size: 1.0625rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: var(--color-text);
+}
+
+.experience-item__org {
+    margin: 0 0 0.875rem;
+    font-size: 0.875rem;
+    color: var(--color-text-muted);
+}
+
+.experience-item__link {
+    display: inline-block;
+    margin-bottom: 0.875rem;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    transition: color 0.15s ease;
+}
+
+.experience-item__link:hover {
+    color: var(--color-accent);
+}
+
+.experience-item__cert {
+    display: block;
+    margin-bottom: 0.875rem;
+    max-width: 200px;
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    border: 1px solid var(--color-border);
+    transition: border-color 0.15s ease;
+}
+
+.experience-item__cert:hover {
+    border-color: var(--color-border-strong);
+}
+
+.experience-item__cert img {
+    display: block;
+    width: 100%;
+}
+
+.experience-item__list {
+    margin: 0;
+    padding: 0 0 0 1rem;
+    list-style: none;
+}
+
+.experience-item__list li {
+    position: relative;
+    margin-bottom: 0.5rem;
+    font-size: 0.875rem;
+    line-height: 1.65;
+    color: var(--color-text-secondary);
+}
+
+.experience-item__list li::before {
+    content: "—";
+    position: absolute;
+    left: -1rem;
+    color: var(--color-text-muted);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+}
+
+/* ── Contact ── */
 
 .contact-container {
     display: flex;
     flex-direction: column;
-    margin-top: 10px;
-    min-width: 50%;
-    height: auto;
-
-    padding: 30px 10px;
-    margin-bottom: 500px;
+    max-width: 440px;
+    margin: 3rem auto 2rem;
+    padding: 0;
 }
 
 .get-in-touch {
     position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: auto;
-    width: 60%;
-    left: 20%;
-    padding: 20px;
-    background-color: white;
-    border-radius: 30px;
-    box-shadow: 10px 10px 0px orange;
+    display: block;
+    width: 100%;
+    left: unset;
+    padding: 0;
+    margin-bottom: 0.5rem;
+    background: none;
+    border: none;
+    box-shadow: none;
+    font-size: clamp(1.75rem, 4vw, 2.25rem);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    color: var(--color-text);
+    text-align: left;
 }
 
 .contact-form {
-    margin-top: 40px;
-    padding: 5%;
+    margin-top: 1.5rem;
+    padding: 0;
     width: 100%;
-    background-color: white;
-    border-radius: 5%;
+    background: none;
+    border: none;
+    box-shadow: none;
 }
 
 .input-field {
-    /* Add common styles for input fields */
-    margin-bottom: 15px;
+    margin-bottom: 1rem;
 }
 
 .message-textarea {
-    /* Add styles for the message textarea */
     width: 100%;
-    min-height: 200px;
+    min-height: 140px;
     resize: vertical;
-    padding: 10px;
-    margin-bottom: 15px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    padding: 0.75rem;
+    margin-bottom: 1rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    background: var(--color-bg-subtle);
+    color: var(--color-text);
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    line-height: 1.6;
+    transition: border-color 0.15s ease;
+}
+
+.message-textarea:focus {
+    outline: none;
+    border-color: var(--color-border-strong);
+}
+
+.message-textarea::placeholder {
+    color: var(--color-text-muted);
 }
 
 .submit-contact {
     display: flex;
-    align-items: center;
-    margin-top: 30px;
-    justify-content: center;
+    margin-top: 0.5rem;
+    justify-content: flex-start;
     width: 100%;
 }
 
-.about-page header {
-    background-color: transparent;
+.contact-form .MuiOutlinedInput-root {
+    background: var(--color-bg-subtle);
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
 }
 
-.about-title {
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: auto;
-    width: fit-content;
-    left: 50%;
-    transform: translateX(-50%);
-    padding: 30px;
-    background-color: white;
-    border-radius: 30px;
-    box-shadow: 10px 10px 0px orange;
+.contact-form .MuiOutlinedInput-notchedOutline {
+    border-color: var(--color-border) !important;
 }
 
-.timeline-vertical-circle {
-    display: flex;
-
-    justify-content: center;
-    align-items: center;
-    height: 40px;
-    width: 40px;
-    outline: 3px dashed;
-    border-radius: 50%;
+.contact-form .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline {
+    border-color: var(--color-border-strong) !important;
 }
 
-.timelines {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 60px 80px 50px;
+.contact-form
+    .MuiOutlinedInput-root.Mui-focused
+    .MuiOutlinedInput-notchedOutline {
+    border-color: var(--color-border-strong) !important;
+    border-width: 1px !important;
 }
 
-.timeline {
-    font-family: "Calibri";
-    max-width: 1200px;
-    width: 100%;
-    margin: 30px;
-}
-.timeline img {
-    object-fit: contain; /* Maintain the aspect ratio and fit within the container */
+.contact-form .MuiInputLabel-root {
+    color: var(--color-text-muted);
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
 }
 
-.timeline-certificate header {
-    box-shadow: none;
-    height: 0;
+.contact-form .MuiInputBase-input {
+    color: var(--color-text);
 }
 
-.timeline-certificate h1,
-.timeline-certificate h2 {
-    font-size: 15px;
-    margin: 0;
-    padding: 0;
-    font-family: Calibri Light;
+.contact-form .MuiButton-contained {
+    background: var(--color-text) !important;
+    color: var(--color-bg) !important;
+    font-family: var(--font-mono) !important;
+    box-shadow: none !important;
+    text-transform: none !important;
+    font-weight: 500 !important;
+    font-size: 0.8125rem !important;
+    padding: 0.5rem 1.25rem !important;
+    border-radius: var(--radius-sm) !important;
 }
 
-.timeline-certificate div {
-    font-size: 20px;
+.contact-form .MuiButton-contained:hover {
+    background: var(--color-text-secondary) !important;
 }
 
-.timeline-certificate h2 {
-    margin-left: 18px;
+.contact-form .MuiButton-contained.Mui-disabled {
+    background: var(--color-surface) !important;
+    color: var(--color-text-muted) !important;
 }
 
-.MuiAccordion-gutters {
-    outline: 1px solid;
-    outline-color: orange;
-    padding: 15px;
-}
-
-.MuiAccordion-gutters:hover {
-    outline: 3px solid orange;
-    transition: 0.5s ease;
-    position: relative;
-    bottom: 5px;
-    outline-offset: 5px;
+@media (max-width: 768px) {
+    .about-page {
+        padding: 2rem 0;
+    }
 }

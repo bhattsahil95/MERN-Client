@@ -5,6 +5,7 @@ import ContactForm from "../components/ContactPage/contactform";
 const ContactPage = () => {
     return (
         <Container maxWidth="sm" className="contact-container">
+            <p className="section-label">// contact</p>
             <Typography variant="h5" className="get-in-touch" gutterBottom>
                 Get in touch!
             </Typography>
