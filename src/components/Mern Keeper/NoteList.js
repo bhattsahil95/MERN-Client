@@ -14,19 +14,35 @@ import "react-toastify/dist/ReactToastify.css";
 import Dashboard from "./dashboard";
 import NoteSkeleton from "./Helper/NoteSkeleton";
 
-function NotesList({ selectedOption, socket }) {
+function NotesList({ selectedOption, socket, activeUsers }) {
     const { notePage, setNotePage, setNotes_all } = noteStore();
     const notesPerPage = selectedOption;
     const [displayedNote, setDisplayedNote] = useState(null);
 
     const [notes, setNotes] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
+    const suppressUntilRef = React.useRef(0);
 
     const fetchNotes = async () => {
         try {
+            // Try to populate immediately from cache for perceived performance
+            const cached = localStorage.getItem('notes_cache');
+            if (cached) {
+                try {
+                    const parsed = JSON.parse(cached);
+                    setNotes(parsed);
+                    setNotes_all(parsed);
+                    setIsLoading(false);
+                } catch (e) {
+                    // ignore parse errors
+                }
+            }
+
             const notes = await getNotes();
             setNotes(notes);
             setNotes_all(notes);
+            // Update cache
+            try { localStorage.setItem('notes_cache', JSON.stringify(notes)); } catch (e) {}
             setIsLoading(false);
         } catch (error) {
             console.error(error);
@@ -36,13 +52,22 @@ function NotesList({ selectedOption, socket }) {
 
     useEffect(() => {
         // Set up socket event listeners
-        socket.on("updatePage", (message) => {
+        const handler = (message) => {
+            // If we recently performed a local update, suppress the toast to avoid duplicates
+            const now = Date.now();
+            if (suppressUntilRef.current && now < suppressUntilRef.current) {
+                // still refresh notes silently
+                fetchNotes();
+                return;
+            }
             fetchNotes();
             toast.warning(message);
-        });
+        };
+
+        socket && socket.on("updatePage", handler);
 
         return () => {
-            socket.disconnect();
+            socket && socket.off("updatePage", handler);
         };
     }, [socket]);
 
@@ -60,7 +85,9 @@ function NotesList({ selectedOption, socket }) {
                 // Note was created successfully, now fetch the updated notes
                 await fetchNotes();
                 toast.success("Note created successfully!");
-                socket.emit("newNote", "Refresh Required!");
+                // suppress incoming "updatePage" toast for 1s since we just updated
+                suppressUntilRef.current = Date.now() + 1000;
+                socket && socket.emit("newNote", "Refresh Required!");
             } else {
                 // Note creation failed, handle the error (optional)
                 toast.error("Failed to create the note.");
@@ -102,15 +129,19 @@ function NotesList({ selectedOption, socket }) {
 
                 // Fetch the updated notes after successful update
                 await fetchNotes();
-                setDisplayedNote(null);
-                socket.emit("updateNote", "Refresh Required!");
+                // suppress incoming "updatePage" toast for 1s since we just updated
+                suppressUntilRef.current = Date.now() + 1000;
+                socket && socket.emit("updateNote", "Refresh Required!");
+                return true;
             } else {
                 toast.error(response.message);
+                return false;
             }
         } catch (error) {
             // Handle any unexpected errors
             console.error("Error updating the note:", error);
             toast.error("An error occurred while updating the note.");
+            return false;
         }
     };
 
@@ -143,7 +174,7 @@ function NotesList({ selectedOption, socket }) {
 
     return (
         <div>
-            <Dashboard notes={notes}> </Dashboard>
+            <Dashboard notes={notes} activeUsers={activeUsers} />
             <CreateArea addNote={addNote} />
             {/* Notes display Section */}
             {/* <div className="notes-display" >

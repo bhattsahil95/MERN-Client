@@ -46,8 +46,15 @@ function CreateArea(props) {
   }
 
   return (
-    <div className="form">
-      {/* <form> */}
+    <form className="form" onSubmit={handleNoteSubmit}>
+      <div className="form__header">
+        <div>
+          <p className="form__eyebrow">Quick capture</p>
+          <h2>Create a polished note</h2>
+        </div>
+        <span className="form__status">{note.timeCreated || "Ready when you are"}</span>
+      </div>
+
       <input
         name="title"
         onChange={handleNote}
@@ -57,15 +64,16 @@ function CreateArea(props) {
       <textarea
         name="content"
         value={note.content}
-        placeholder="Take a note..."
-        rows="3"
+        placeholder="Write down ideas, reminders, or plans..."
+        rows="4"
         onChange={handleNote}
       />
-      <span> {note.timeCreated} </span>
+
       <Zoom in={isActive}>
         <Fab
           color="primary"
-          onClick={handleNoteSubmit}
+          type="submit"
+          aria-label="Add note"
           sx={{
             backgroundColor: "#ff8c00",
             "&:hover": {
@@ -78,8 +86,7 @@ function CreateArea(props) {
           <AddIcon sx={{ color: "#09090b" }} />
         </Fab>
       </Zoom>
-      {/* </form> */}
-    </div>
+    </form>
   );
 }
 

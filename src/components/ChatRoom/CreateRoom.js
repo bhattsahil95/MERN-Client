@@ -16,13 +16,20 @@ const CreateRoom = ({ socket, chatId, type }) => {
     };
 
     const handleCreateRoom = () => {
-        if (roomName.trim() === "") {
+        const trimmedRoomName = roomName.trim();
+
+        if (trimmedRoomName === "") {
             alert("Please enter a room name.");
             return;
         }
 
-        if (rooms.some((room) => room.name === roomName)) {
+        if (rooms.some((room) => room.name.toLowerCase() === trimmedRoomName.toLowerCase())) {
             alert(`A room with the same name already exists.`);
+            return;
+        }
+
+        if (isPrivateRoom && roomKey.trim() === "") {
+            alert("Please enter a room password for private rooms.");
             return;
         }
 
@@ -31,10 +38,10 @@ const CreateRoom = ({ socket, chatId, type }) => {
         // Assuming you have a function to generate unique room IDs
         const newRoom = {
             id: roomId,
-            name: roomName,
+            name: trimmedRoomName,
             hostId: chatId,
             isPrivate: isPrivateRoom ? true : false,
-            roomKey: isPrivateRoom ? roomKey : null,
+            roomKey: isPrivateRoom ? roomKey.trim() : null,
         };
 
         addRoom(newRoom);

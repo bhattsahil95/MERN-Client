@@ -1,12 +1,11 @@
 import React, { useState } from "react";
-import { TextField, Button } from "@mui/material";
+import { TextField, Button, CircularProgress } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { buildApiUrl } from "../../Services/apiConfig";
 
 const ContactForm = () => {
-    const BASE_URL = process.env.REACT_APP_BASE_URL;
-
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [phoneNumber, setPhoneNumber] = useState("");
@@ -14,72 +13,73 @@ const ContactForm = () => {
     const [message, setMessage] = useState("");
     const [phoneNumberError, setPhoneNumberError] = useState("");
     const [emailError, setEmailError] = useState("");
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
-    // Inside the ContactForm component
     const isFormEmpty =
         !firstName || !lastName || !phoneNumber || !email || !message;
-    const isPhoneNumberValid = !phoneNumberError;
-    const isEmailValid = !emailError;
+    const isPhoneNumberValid = phoneNumber.length === 0 || !phoneNumberError;
+    const isEmailValid = email.length === 0 || !emailError;
 
     const isFormValid = !isFormEmpty && isPhoneNumberValid && isEmailValid;
 
     const validatePhoneNumber = (value) => {
-        if (value.length > 0) {
-            // Check if value is not empty
-            if (!/^\+\d{1,3} \d{3} \d{3} \d{4}$/.test(value)) {
-                setPhoneNumberError(
-                    "Please enter a valid phone number with the format +X XXX XXX XXXX"
-                );
-            } else {
-                setPhoneNumberError(""); // Clear error when the phone number is valid
-            }
-        } else {
-            setPhoneNumberError(""); // Clear error when the field is empty
+        const trimmedValue = value.trim();
+
+        if (!trimmedValue) {
+            setPhoneNumberError("");
+            return false;
         }
+
+        const isValid = /^\+\d{1,3} \d{3} \d{3} \d{4}$/.test(trimmedValue);
+        setPhoneNumberError(
+            isValid
+                ? ""
+                : "Please enter a valid phone number with the format +X XXX XXX XXXX"
+        );
+
+        return isValid;
     };
 
     const validateEmail = (value) => {
-        if (value.length > 0) {
-            // Check if value is not empty
-            if (
-                !/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/.test(value)
-            ) {
-                setEmailError("Please enter a valid email address");
-            } else {
-                setEmailError(""); // Clear error when the email is valid
-            }
-        } else {
-            setEmailError(""); // Clear error when the field is empty
+        const trimmedValue = value.trim();
+
+        if (!trimmedValue) {
+            setEmailError("");
+            return false;
         }
+
+        const isValid = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/.test(trimmedValue);
+        setEmailError(isValid ? "" : "Please enter a valid email address");
+
+        return isValid;
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        // Validate phone number and email before submitting
-        validatePhoneNumber(phoneNumber);
-        validateEmail(email);
 
-        if (phoneNumberError || emailError) {
+        const isPhoneValid = validatePhoneNumber(phoneNumber);
+        const isEmailValidValue = validateEmail(email);
+
+        if (!isPhoneValid || !isEmailValidValue) {
+            toast.error("Please correct the highlighted fields before sending.");
             return;
         }
 
-        const url = `${BASE_URL}contact/email`;
-        // Create a data object to send to the backend
+        setIsSubmitting(true);
+
         const formData = {
-            firstName,
-            lastName,
-            phoneNumber,
-            email,
-            message,
+            firstName: firstName.trim(),
+            lastName: lastName.trim(),
+            phoneNumber: phoneNumber.trim(),
+            email: email.trim(),
+            message: message.trim(),
         };
 
-        // Send the form data to the backend
         try {
-            const response = await axios.post(url, formData);
+            const response = await axios.post(buildApiUrl("contact/email"), formData);
 
-            if (response.status === 200) {
-                toast.success("Email sent! ");
-                // Clear form fields
+            if (response.status === 201 || response.status === 200) {
+                toast.success("Message received. I will be in touch soon.");
                 setFirstName("");
                 setLastName("");
                 setPhoneNumber("");
@@ -88,10 +88,13 @@ const ContactForm = () => {
                 setPhoneNumberError("");
                 setEmailError("");
             } else {
-                console.error("Failed to send email.");
+                toast.error("The message could not be sent right now.");
             }
         } catch (error) {
-            console.error("An error occurred:", error);
+            const message = error?.response?.data?.message || "The message could not be sent right now.";
+            toast.error(message);
+        } finally {
+            setIsSubmitting(false);
         }
     };
 
@@ -179,14 +182,14 @@ const ContactForm = () => {
                     variant="contained"
                     color="primary"
                     type="submit"
-                    endIcon={<SendIcon />}
-                    disabled={!isFormValid}
+                    endIcon={isSubmitting ? <CircularProgress size={16} color="inherit" /> : <SendIcon />}
+                    disabled={!isFormValid || isSubmitting}
                     sx={{
-                        backgroundColor: isFormValid ? undefined : "#ccc", // Blue when active, grey when disabled
+                        backgroundColor: isFormValid && !isSubmitting ? undefined : "#ccc",
                         color: "#fff",
                     }}
                 >
-                    Send Message
+                    {isSubmitting ? "Sending..." : "Send Message"}
                 </Button>
             </div>
         </form>

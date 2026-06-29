@@ -44,10 +44,33 @@ function ApiPage() {
     setIsLoading(true);
 
     try {
+      // Guard: check persisted history/count to avoid bypass via refresh
+      const persisted = JSON.parse(localStorage.getItem('weather_cache') || 'null');
+      if (persisted && Array.isArray(persisted.history) && persisted.history.find(h => h.name.toLowerCase() === city.toLowerCase())) {
+        const existing = persisted.history.find(h => h.name.toLowerCase() === city.toLowerCase());
+        setData(existing);
+        setIsLoading(false);
+        return;
+      }
+
       const response = await axios.get(url);
       setData(response.data);
-      setCityCount((previous) => previous + 1);
-      setCityHistory((previous) => [...previous, response.data]);
+      setCityCount((previous) => {
+        const next = previous + 1;
+        try {
+          const persisted = JSON.parse(localStorage.getItem('weather_cache') || 'null') || { count: 0, history: [] };
+          persisted.count = next;
+          persisted.history = persisted.history.concat([response.data]).slice(-API_COUNT_LIMIT);
+          localStorage.setItem('weather_cache', JSON.stringify(persisted));
+        } catch (e) {}
+        return next;
+      });
+
+      setCityHistory((previous) => {
+        const nextHist = [...previous, response.data].slice(-API_COUNT_LIMIT);
+        try { localStorage.setItem('weather_cache', JSON.stringify({ count: cityCount + 1, history: nextHist })); } catch (e) {}
+        return nextHist;
+      });
       if (cityCount >= API_COUNT_LIMIT - 1) {
         setCityCountLimit(true);
       }
@@ -62,6 +85,16 @@ function ApiPage() {
   const debouncedFetchData = debounce(fetchData, 500);
 
   useEffect(() => {
+    // load persisted weather cache (count and history)
+    try {
+      const persisted = JSON.parse(localStorage.getItem('weather_cache') || 'null');
+      if (persisted) {
+        setCityHistory(persisted.history || []);
+        setCityCount(persisted.count || 0);
+        if ((persisted.count || 0) >= API_COUNT_LIMIT) setCityCountLimit(true);
+      }
+    } catch (e) {}
+
     if (city.trim() !== '') {
       if (data === null || data.name.toLowerCase() !== city.toLowerCase()) {
         if (newApi && !cityCountLimt) {

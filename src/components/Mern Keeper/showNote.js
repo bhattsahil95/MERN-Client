@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import CloseIcon from '@mui/icons-material/Close';
 import SaveIcon from '@mui/icons-material/Save';
+import { toast } from 'react-toastify';
 
 
 
@@ -14,11 +15,19 @@ const ShowNote = ({_id, title, content, timeCreated, closeNote, handleSave }) =>
   const [validData, setValidData] = useState(true)
 
   // Function to handle the "Save" button click
-  const handleSaveClick = () => {
-    // Call the handleSave function and pass the edited note data as an object
-    handleSave(_id, { title: editedTitle, content: editedContent });
-    // Call the closeNote function to close the popup after saving
-    closeNote();
+  const handleSaveClick = async () => {
+    try {
+      const result = await handleSave(_id, { title: editedTitle, content: editedContent });
+      if (result === true) {
+        toast.success('Note saved');
+        closeNote();
+      } else {
+        toast.error('Failed to save note');
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error('An error occurred while saving');
+    }
   };
 
   // Function to handle changes in the title input
@@ -63,9 +72,14 @@ const ShowNote = ({_id, title, content, timeCreated, closeNote, handleSave }) =>
       </p>
       <div className="popup-buttons">
         {/* Conditionally enable/disable the "Save" button based on the modification state */}
-        {((isTitleModified || isContentModified) && validData) ? (
-          <SaveIcon className="save-button" onClick={handleSaveClick} />
-        ) : null}
+        <button
+          className="save-button"
+          onClick={handleSaveClick}
+          disabled={!((isTitleModified || isContentModified) && validData)}
+          title={!((isTitleModified || isContentModified) && validData) ? 'No changes to save' : 'Save changes'}
+        >
+          <SaveIcon fontSize="small" />
+        </button>
       
         
 

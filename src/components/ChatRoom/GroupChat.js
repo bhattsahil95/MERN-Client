@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import useChatRoomStore from "../../chatRoomStore";
 import ScrollToBottom from "react-scroll-to-bottom";
-import { toast } from "react-toastify";
 
 const GroupChat = ({ socket, chatId, userName }) => {
     const {
@@ -16,7 +15,7 @@ const GroupChat = ({ socket, chatId, userName }) => {
     const [lastMessage, setLastMessage] = useState(null);
 
     const handleSendMessage = () => {
-        if (messageInput.trim() === "") {
+        if (!activeRoom || messageInput.trim() === "") {
             return;
         }
 
@@ -24,44 +23,58 @@ const GroupChat = ({ socket, chatId, userName }) => {
 
         const messageData = {
             sender: { id: chatId, name: userName },
-            message: messageInput,
+            message: messageInput.trim(),
             roomId: activeRoom.id,
             timeStamp: timeStamp,
         };
 
         socket.emit("sendRoomMessage", messageData);
-
-        appendRoomMessage(messageData);
         setMessageInput("");
     };
 
     const handleExitChat = () => {
+        if (activeRoom && socket) {
+            socket.emit("leaveRoom", activeRoom.id);
+        }
         setActiveRoom(null);
         clearRoomMessages();
+        setLastMessage(null);
     };
 
     const handleIncomingRoomMessage = (data) => {
+        if (!data || !activeRoom || data.roomId !== activeRoom.id) {
+            return;
+        }
+
+        if (data.type === "system") {
+            appendRoomMessage(data);
+            return;
+        }
+
         const displayUserName =
             lastMessage === null ||
-            String(lastMessage.sender.id) !== String(data.sender.id);
+            String(lastMessage.sender?.id) !== String(data.sender?.id);
 
         const newData = { ...data, displayUserName };
-        console.log(newData);
-
         appendRoomMessage(newData);
-        setLastMessage(roomMessages[-1]);
-        console.log("Prining Last Message  : ", lastMessage);
+        setLastMessage(newData);
     };
 
     useEffect(() => {
-        if (socket) {
-            socket.on("receiveRoomMessage", (data) => {
-                handleIncomingRoomMessage(data);
-            });
-        }
+        if (!socket) return;
 
-        return () => {};
-    }, [socket]);
+        const onReceiveRoomMessage = (data) => {
+            handleIncomingRoomMessage(data);
+        };
+
+        socket.on("receiveRoomMessage", onReceiveRoomMessage);
+        socket.on("roomSystemMessage", onReceiveRoomMessage);
+
+        return () => {
+            socket.off("receiveRoomMessage", onReceiveRoomMessage);
+            socket.off("roomSystemMessage", onReceiveRoomMessage);
+        };
+    }, [socket, activeRoom, lastMessage]);
 
     if (!activeRoom) {
         return null;
@@ -85,28 +98,51 @@ const GroupChat = ({ socket, chatId, userName }) => {
             >
                 <div>
                     {roomMessages &&
-                        roomMessages.map((message, index) => (
-                            <div className="group-messages">
-                                <div
-                                    key={index}
-                                    className={
-                                        message.sender.id === chatId
-                                            ? "my-message right"
-                                            : "other-message left"
-                                    }
-                                >
-                                    {message.message}
-                                </div>
+                        roomMessages
+                            .filter((message) => message.roomId === activeRoom.id)
+                            .map((message, index) => {
+                                const isMine =
+                                    message.type !== "system" &&
+                                    String(message.sender?.id) === String(chatId);
 
-                                {message.displayUserName && (
-                                    <div className="message-info">
-                                        <div className="other-user">
-                                            {message.sender.name}
-                                        </div>
+                                return (
+                                    <div
+                                        key={message.timeStamp || index}
+                                        className={`group-messages ${
+                                            message.type === "system"
+                                                ? "system"
+                                                : isMine
+                                                ? "mine"
+                                                : "others"
+                                        }`}
+                                    >
+                                        {message.type === "system" ? (
+                                            <div className="system-message">
+                                                {message.text}
+                                            </div>
+                                        ) : (
+                                            <>
+                                                {message.displayUserName && (
+                                                    <div className="message-meta">
+                                                        <span className="message-author">
+                                                            {message.sender?.name}
+                                                        </span>
+                                                    </div>
+                                                )}
+                                                <div
+                                                    className={
+                                                        isMine
+                                                            ? "my-message"
+                                                            : "other-message"
+                                                    }
+                                                >
+                                                    {message.message}
+                                                </div>
+                                            </>
+                                        )}
                                     </div>
-                                )}
-                            </div>
-                        ))}
+                                );
+                            })}
                 </div>
             </ScrollToBottom>
 
@@ -128,7 +164,7 @@ const GroupChat = ({ socket, chatId, userName }) => {
                     }}
                 />
                 <button onClick={handleSendMessage} className="send-btn">
-                    Send
+                    SEND
                 </button>
             </div>
         </div>

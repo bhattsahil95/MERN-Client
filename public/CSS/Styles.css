@@ -4,6 +4,8 @@
     position: sticky;
     top: 0;
     z-index: 1000;
+    isolation: isolate;
+    overflow: visible;
     height: var(--header-height);
     background: rgba(9, 9, 11, 0.88) !important;
     backdrop-filter: blur(10px);
@@ -224,17 +226,24 @@
 .nav-mobile-overlay {
     position: fixed;
     inset: 0;
-    top: var(--header-height);
-    background: rgba(0, 0, 0, 0.4);
-    z-index: 999;
+    width: 100vw;
+    height: 100dvh;
+    min-height: 100vh;
+    background: rgba(2, 6, 23, 0.72);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    z-index: 2147483647;
+    pointer-events: auto;
 }
 
 .nav-mobile-panel {
-    position: absolute;
+    position: fixed;
     top: 0;
     right: 0;
-    width: min(280px, 80vw);
-    height: 100%;
+    bottom: 0;
+    z-index: 2147483647;
+    width: min(320px, 86vw);
+    max-width: 320px;
     background: var(--color-bg);
     border-left: 1px solid var(--color-border);
     padding: 1rem;
@@ -242,6 +251,7 @@
     flex-direction: column;
     justify-content: space-between;
     overflow-y: auto;
+    box-shadow: -16px 0 40px rgba(0, 0, 0, 0.28);
 }
 
 .nav-mobile-links {

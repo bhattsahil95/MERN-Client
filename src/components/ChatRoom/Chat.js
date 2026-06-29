@@ -1,21 +1,22 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import useChatRoomStore from "../../chatRoomStore";
 import ScrollToBottom from "react-scroll-to-bottom";
 
 const Chat = ({ myChat, setMyChat, socket, chatId }) => {
     const chatPartner = myChat ? myChat.name : "";
     const { messages, appendMessage, clearMessages } = useChatRoomStore();
-    const [messageInput, setMessageInput] = useState();
+    const [messageInput, setMessageInput] = useState("");
 
     const handleSendMessage = () => {
-        if (messageInput.trim() === "") {
+        const trimmed = messageInput.trim();
+        if (!trimmed || !myChat) {
             return;
         }
 
         const messageData = {
             sender: chatId,
             receiver: myChat.id,
-            message: messageInput,
+            message: trimmed,
         };
 
         socket.emit("sendMessage", messageData);
@@ -51,18 +52,29 @@ const Chat = ({ myChat, setMyChat, socket, chatId }) => {
             >
                 <div className="messages">
                     {messages &&
-                        messages.map((message, index) => (
-                            <div
-                                key={index}
-                                className={
-                                    message.sender === chatId
-                                        ? "my-message right"
-                                        : "other-message left"
-                                }
-                            >
-                                {message.message}
-                            </div>
-                        ))}
+                        messages.map((message, index) => {
+                            const isMine = String(message.sender) === String(chatId);
+
+                            return (
+                                <div
+                                    key={index}
+                                    className={`group-messages ${isMine ? "mine" : "others"}`}
+                                >
+                                    <div className="message-meta">
+                                        <span className="message-author">
+                                            {isMine ? "You" : chatPartner}
+                                        </span>
+                                    </div>
+                                    <div
+                                        className={
+                                            isMine ? "my-message" : "other-message"
+                                        }
+                                    >
+                                        {message.message}
+                                    </div>
+                                </div>
+                            );
+                        })}
                 </div>
             </ScrollToBottom>
 

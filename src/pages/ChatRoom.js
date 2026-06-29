@@ -28,6 +28,7 @@ const ChatRoom = () => {
         setIsPrivateRoom,
         setActiveRoom,
         appendRoomMessage,
+        clearRoomMessages,
     } = useChatRoomStore();
 
     const [alertMessage, setAlertMessage] = useState(null);
@@ -41,27 +42,73 @@ const ChatRoom = () => {
     const [showChatConfirmation, setShowChatConfirmation] = useState(false);
     const [chatParty, setChatParty] = useState([]);
     const [chatRequestPending, setChatRequestPending] = useState(false);
+    const [joinRoomModal, setJoinRoomModal] = useState({ open: false, room: null });
+    const [roomPassword, setRoomPassword] = useState("");
 
     const socket = useRef();
+    const chatIdRef = useRef(chatId);
+    const roomsRef = useRef(rooms);
+    const activeRoomRef = useRef(activeRoom);
+    const userNameRef = useRef(userName);
 
     useEffect(() => {
+        chatIdRef.current = chatId;
+    }, [chatId]);
+
+    useEffect(() => {
+        roomsRef.current = rooms;
+    }, [rooms]);
+
+    useEffect(() => {
+        activeRoomRef.current = activeRoom;
+    }, [activeRoom]);
+
+    useEffect(() => {
+        userNameRef.current = userName;
+    }, [userName]);
+
+    const cleanupPresence = () => {
+        if (!socket.current || !chatIdRef.current || !userNameRef.current) {
+            return;
+        }
+
+        if (activeRoomRef.current) {
+            socket.current.emit("leaveRoom", activeRoomRef.current.id);
+        }
+
+        socket.current.emit("removeChatUser", {
+            chatId: chatIdRef.current,
+            userName: userNameRef.current,
+        });
+    };
+
+    useEffect(() => {
+        const storedUserData = sessionStorage.getItem("userData");
+        const activeChat = sessionStorage.getItem("activeChat");
+
         if (!socket.current) {
-            socket.current = io(`${process.env.REACT_APP_BASE_URL}chatroom`);
+            socket.current = io(`${process.env.REACT_APP_BASE_URL || "http://localhost:5500/"}chatroom`, {
+                transports: ["websocket"],
+                reconnection: true,
+                withCredentials: true,
+            });
         }
 
         socket.current.on("connect", () => {
             if (storedUserData) {
-                const { chatId } = JSON.parse(storedUserData);
+                const { chatId, userName } = JSON.parse(storedUserData);
+                socket.current.emit("newChatUser", { chatId, userName });
                 socket.current.emit("map-audit", { chatId });
             }
 
             if (activeChat) {
                 socket.current.emit("retriveChat", activeChat);
             }
-        });
 
-        const storedUserData = sessionStorage.getItem("userData");
-        const activeChat = sessionStorage.getItem("activeChat");
+            if (activeRoomRef.current) {
+                socket.current.emit("joinRoom", { roomId: activeRoomRef.current.id });
+            }
+        });
 
         if (storedUserData) {
             const { userName, chatId } = JSON.parse(storedUserData);
@@ -70,25 +117,27 @@ const ChatRoom = () => {
             setActive(true);
         }
 
-        socket.current.on("userUpdate", ({ type, who, users }) => {
+        socket.current.on("userUpdate", ({ type, who, users: incomingUsers }) => {
             const storedUserData = sessionStorage.getItem("userData");
             const currentId = storedUserData
                 ? JSON.parse(storedUserData).chatId
                 : null;
-            if (who.chatId !== currentId) {
+
+            if (who?.chatId !== currentId) {
                 if (type === "add" && who) {
                     toast.success(`User Joined: ${who.userName}`);
                 } else if (type === "remove" && who) {
                     toast.error(`User Left: ${who.userName}`);
-                } else if (type === "update") {
                 }
             }
 
-            const filteredUsers = users.filter(
-                (user) => user.chatId !== currentId
-            );
-            setUsers(filteredUsers);
-            setUserCount(filteredUsers.length);
+            const normalizedUsers = (incomingUsers || [])
+                .filter(Boolean)
+                .filter((user) => user.chatId !== currentId)
+                .filter((user, index, list) => list.findIndex((entry) => entry.chatId === user.chatId) === index);
+
+            setUsers(normalizedUsers);
+            setUserCount(normalizedUsers.length);
         });
 
         socket.current.on("receiveMessage", (messageData) => {
@@ -100,17 +149,25 @@ const ChatRoom = () => {
             setChatParty({ host, guest });
         });
 
-        socket.current.on("chatRequestAccept", ({ guest }) => {
+        socket.current.on("chatRequestAccept", ({ host, guest }) => {
             setChatRequestPending(false);
-            setMyChat(guest);
+            setMyChat(guest || host);
             clearMessages();
-            toast.success(`${guest.name} accepted your request`);
-            sessionStorage.setItem("activeChat", guest.id);
+            toast.success(`${guest?.name || host?.name} accepted your request`);
+            sessionStorage.setItem("activeChat", guest?.id || host?.id);
         });
 
         socket.current.on("chatRequestDecline", ({ guest }) => {
             setChatRequestPending(false);
-            toast.warning(`${guest.name} declined your request.`);
+            toast.warning(`${guest?.name || "The other user"} declined your request.`);
+        });
+
+        socket.current.on("chatRequestAccepted", ({ host }) => {
+            setChatRequestPending(false);
+            setMyChat(host);
+            clearMessages();
+            toast.success(`Chat started with ${host?.name || "the other user"}`);
+            sessionStorage.setItem("activeChat", host?.id);
         });
 
         socket.current.on("failedChatRequest", () => {
@@ -134,14 +191,26 @@ const ChatRoom = () => {
         });
 
         //Rooms
-        socket.current.on("roomUpdate", (rooms) => {
-            addRoom(rooms);
+        socket.current.on("roomUpdate", (roomsList) => {
+            addRoom(roomsList);
         });
 
         socket.current.on("addRoom", (newRoom) => {
-            if (newRoom.hostId !== chatId) {
+            if (newRoom.hostId !== chatIdRef.current) {
                 addRoom(newRoom);
-                toast.info("Room Added");
+                toast.info(`Room added: ${newRoom.name}`);
+            }
+        });
+
+        socket.current.on("joinRoomError", ({ message }) => {
+            toast.error(message || "Unable to join room.");
+        });
+
+        socket.current.on("roomJoined", ({ roomId, roomName }) => {
+            const joinedRoom = roomsRef.current.find((room) => room.id === roomId);
+            if (joinedRoom) {
+                setActiveRoom(joinedRoom);
+                toast.success(`Joined ${roomName}`);
             }
         });
 
@@ -150,8 +219,20 @@ const ChatRoom = () => {
             toast.info("Room Deleted");
         });
 
+        const handlePageLeave = () => {
+            cleanupPresence();
+        };
+
+        window.addEventListener("beforeunload", handlePageLeave);
+        window.addEventListener("pagehide", handlePageLeave);
+
         return () => {
-            socket.current.disconnect();
+            window.removeEventListener("beforeunload", handlePageLeave);
+            window.removeEventListener("pagehide", handlePageLeave);
+            cleanupPresence();
+            if (socket.current) {
+                socket.current.disconnect();
+            }
         };
     }, []);
 
@@ -176,6 +257,10 @@ const ChatRoom = () => {
         sessionStorage.setItem("userData", userData);
 
         setChatID(newChatId);
+        setActiveRoom(null);
+        clearRoomMessages();
+        setCreateRoom(false);
+        setIsPrivateRoom(false);
 
         setActive(true);
         socket.current.emit("newChatUser", {
@@ -185,14 +270,23 @@ const ChatRoom = () => {
     };
 
     const handleClearUser = () => {
+        if (socket.current && chatId && userName) {
+            cleanupPresence();
+        }
+
         setActive(false);
-        sessionStorage.removeItem("userData");
+        setUsers([]);
+        setUserCount(0);
         setChatRequestPending(false);
         setMyChat(false);
-        socket.current.emit("removeChatUser", {
-            chatId: chatId,
-            userName: userName,
-        });
+        setAlertMessage(null);
+        sessionStorage.removeItem("userData");
+        sessionStorage.removeItem("activeChat");
+        clearMessages();
+        clearRoomMessages();
+        setActiveRoom(null);
+        setCreateRoom(false);
+        setIsPrivateRoom(false);
     };
 
     const handleJoinChat = ({ guestId, guestName }) => {
@@ -211,6 +305,7 @@ const ChatRoom = () => {
             setChatParty([]);
         } else if (answer === "yes") {
             setMyChat(chatParty.host);
+            sessionStorage.setItem("activeChat", chatParty.host.id);
             setChatParty([]);
         }
     };
@@ -230,23 +325,46 @@ const ChatRoom = () => {
     };
 
     const handleJoinRoom = (room) => {
-        if (room.isPrivate && !room.password) {
-           
-            // You can implement a password prompt here if needed
-            const password = prompt(
-                "This is a private room. Please enter the password:"
-            );
-            if (password === room.roomKey) {
-                setActiveRoom(room);
-            } else {
-                setAlertMessage("Incorrect password. Unable to join the room.");
-            }
+        if (room.isPrivate) {
+            setJoinRoomModal({ open: true, room });
+            setRoomPassword("");
             return;
         }
+
+        socket.current.emit("joinRoom", { roomId: room.id });
         setActiveRoom(room);
     };
 
-  
+    const closeJoinRoomModal = () => {
+        setJoinRoomModal({ open: false, room: null });
+        setRoomPassword("");
+    };
+
+    const handleRoomPasswordSubmit = (e) => {
+        e.preventDefault();
+
+        const room = joinRoomModal.room;
+        const password = roomPassword.trim();
+
+        if (!room) return;
+
+        if (!password) {
+            setAlertMessage("A password is required to join this private room.");
+            return;
+        }
+
+        if (password !== room.roomKey?.trim()) {
+            setAlertMessage("Incorrect password. Unable to join the room.");
+            return;
+        }
+
+        socket.current.emit("joinRoom", {
+            roomId: room.id,
+            roomKey: password,
+        });
+        setActiveRoom(room);
+        closeJoinRoomModal();
+    };
 
     const clearAlert = () => {
         setAlertMessage(null);
@@ -352,22 +470,12 @@ const ChatRoom = () => {
                                                         : "open-room"
                                                 }`}
                                             >
-                                                {room.hostId === chatId && (
-                                                    <DeleteOutlineOutlinedIcon
-                                                        onClick={() => {
-                                                            handleDeleteRoom(
-                                                                room.id
-                                                            );
-                                                        }}
-                                                        className="room-remove"
-                                                    />
-                                                )}
                                                 <div className="room-info">
                                                     <span className="room-name">
-                                                        Name: {room.name}
+                                                        {room.name}
                                                     </span>
                                                     <span className="room-id">
-                                                        ID: {room.id}
+                                                        Room ID: {room.id}
                                                     </span>
                                                 </div>
                                                 <div className="lock-and-button-container">
@@ -376,11 +484,23 @@ const ChatRoom = () => {
                                                             <LockOutlinedIcon />
                                                         </div>
                                                     )}
+                                                    {room.hostId === chatId && (
+                                                        <button
+                                                            type="button"
+                                                            className="room-remove"
+                                                            aria-label="Delete room"
+                                                            onClick={(e) => {
+                                                                e.stopPropagation();
+                                                                handleDeleteRoom(room.id);
+                                                            }}
+                                                        >
+                                                            <DeleteOutlineOutlinedIcon fontSize="small" />
+                                                        </button>
+                                                    )}
                                                     <button
                                                         className="join-btn"
                                                         onClick={() =>
-                                                            handleJoinRoom(room)                                                  
-                                                        
+                                                            handleJoinRoom(room)
                                                         }
                                                     >
                                                         Join
@@ -394,33 +514,31 @@ const ChatRoom = () => {
                                 <div className="existing-rooms room-card">
                                     <h2>Existing Users</h2>
                                     <div className="user-list">
-                                        {users.map(
-                                            (user) =>
-                                                user.userName !==
-                                                    myChat.name && (
-                                                    <div
-                                                        key={user.userName}
-                                                        className="room current-users"
+                                        {users.map((user) => {
+                                            if (!user?.chatId || user.chatId === chatId) {
+                                                return null;
+                                            }
+
+                                            return (
+                                                <div
+                                                    key={user.chatId}
+                                                    className="room current-users"
+                                                >
+                                                    <span>{user.userName}</span>
+                                                    <button
+                                                        className="join-btn"
+                                                        onClick={() =>
+                                                            handleJoinChat({
+                                                                guestId: user.chatId,
+                                                                guestName: user.userName,
+                                                            })
+                                                        }
                                                     >
-                                                        <span>
-                                                            {user.userName}
-                                                        </span>
-                                                        <button
-                                                            className="join-btn"
-                                                            onClick={() =>
-                                                                handleJoinChat({
-                                                                    guestId:
-                                                                        user.chatId,
-                                                                    guestName:
-                                                                        user.userName,
-                                                                })
-                                                            }
-                                                        >
-                                                            Chat
-                                                        </button>
-                                                    </div>
-                                                )
-                                        )}
+                                                        Chat
+                                                    </button>
+                                                </div>
+                                            );
+                                        })}
                                     </div>
                                 </div>
                             </div>
@@ -458,6 +576,43 @@ const ChatRoom = () => {
                     handleAnswer={handleConfirmation}
                     guest={chatParty.guest}
                 ></Confirmation>
+            )}
+
+            {joinRoomModal.open && joinRoomModal.room && (
+                <div className="room-password-modal-overlay">
+                    <div className="room-password-modal">
+                        <h3>Enter room password</h3>
+                        <p>{joinRoomModal.room.name}</p>
+                        <input
+                            className="room-password-input"
+                            type="password"
+                            placeholder="Password"
+                            value={roomPassword}
+                            onChange={(e) => setRoomPassword(e.target.value)}
+                            onKeyDown={(e) => {
+                                if (e.key === "Enter") {
+                                    handleRoomPasswordSubmit(e);
+                                }
+                            }}
+                        />
+                        <div className="room-password-modal-actions">
+                            <button
+                                type="button"
+                                className="room-password-cancel"
+                                onClick={closeJoinRoomModal}
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                type="button"
+                                className="room-password-submit"
+                                onClick={handleRoomPasswordSubmit}
+                            >
+                                Join room
+                            </button>
+                        </div>
+                    </div>
+                </div>
             )}
         </div>
     );

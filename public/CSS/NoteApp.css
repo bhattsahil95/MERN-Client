@@ -13,12 +13,12 @@
 .notes-app header.notes-app-header {
     display: block;
     position: relative;
-    background: var(--note-surface);
-    border: 1px solid var(--note-border);
+    background: linear-gradient(135deg, rgba(255, 140, 0, 0.16), rgba(17, 17, 19, 0.95));
+    border: 1px solid rgba(255, 140, 0, 0.25);
     border-radius: var(--radius-lg, 14px);
     padding: 1rem 1.25rem;
     margin-bottom: 1.5rem;
-    box-shadow: none;
+    box-shadow: var(--shadow-sm);
     height: auto;
 }
 
@@ -44,10 +44,53 @@
     color: var(--color-text);
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
     gap: 1rem;
     flex-wrap: wrap;
     margin: 0;
+}
+
+.notes-app .notes-title-row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.notes-app .counter-active-users {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(34, 197, 94, 0.12);
+    color: #16a34a !important;
+    border: 1px solid rgba(3, 241, 90, 0.25) !important;
+    border-radius: 999px;
+    padding: 0.75rem 0.75rem;
+    font-family: var(--font-mono);
+    
+}
+
+.notes-app .counter-active-users .counter-value {
+    font-weight: 700;
+    color:#22c55e;
+}
+
+
+
+.notes-app .notes-per-page-input {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    margin-left: auto;
+}
+
+.notes-app .notes-app-header__eyebrow {
+    margin: 0 0 0.25rem;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: rgba(255, 255, 255, 0.7);
 }
 
 .notes-app .notes-per-page-input {
@@ -77,9 +120,9 @@
     justify-content: space-between;
     height: fit-content;
     max-height: 220px;
-    min-height: 50px;
+    min-height: 140px;
     overflow: hidden;
-    background: var(--note-surface);
+    background: linear-gradient(145deg, rgba(17, 17, 19, 0.96), rgba(28, 28, 31, 0.9));
     border-radius: var(--radius-md, 10px);
     border: 1px solid var(--note-border);
     position: relative;
@@ -98,11 +141,18 @@
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
 }
 
+.notes-app .note__top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.75rem;
+}
+
 .notes-app .note h1,
 .notes-app .skeleton-title {
     font-size: 0.9375rem;
     font-weight: 600;
-    margin-bottom: 0.375rem;
+    margin: 0 0 0.375rem;
     overflow: hidden;
     width: 90%;
     color: var(--color-text);
@@ -111,13 +161,43 @@
 .notes-app .form {
     position: relative;
     width: 100%;
-    max-width: 520px;
+    max-width: 620px;
     margin: 0 auto 1.5rem;
-    background: var(--note-surface);
+    background: linear-gradient(145deg, rgba(17, 17, 19, 0.96), rgba(28, 28, 31, 0.9));
     padding: 1rem 1.25rem 2.5rem;
     border-radius: var(--radius-lg, 14px);
     border: 1px solid var(--note-border);
     box-shadow: var(--shadow-sm);
+}
+
+.notes-app .form__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 0.75rem;
+}
+
+.notes-app .form__eyebrow {
+    margin: 0 0 0.2rem;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+}
+
+.notes-app .form__header h2 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--color-text);
+}
+
+.notes-app .form__status {
+    font-size: 0.75rem;
+    font-family: var(--font-mono);
+    color: var(--color-text-muted);
 }
 
 .notes-app .form input,
@@ -149,19 +229,27 @@
     box-shadow: var(--shadow-md);
 }
 
+.notes-app .note-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin-top: auto;
+}
+
 .notes-app .note-delete {
     position: relative;
-    float: right;
+    float: none;
     margin-left: auto;
     color: var(--color-text-muted);
-    border: 1px solid var(--note-border);
-    width: 55px;
-    height: 26px;
+    border: none;
+    width: 36px;
+    height: 36px;
     cursor: pointer;
     outline: none;
     background-color: transparent;
-    border-radius: var(--radius-sm, 6px);
-    transition: color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+    border-radius: var(--radius-sm);
+    transition: color 0.2s ease, transform 0.2s ease;
 }
 
 .notes-app .note-delete svg {
@@ -179,9 +267,8 @@
     font-size: 0.6875rem;
     font-family: var(--font-mono);
     color: var(--color-text-muted);
-    position: absolute;
-    bottom: 0.625rem;
-    left: 0.75rem;
+    position: static;
+    margin: 0;
 }
 
 .notes-app .note p,
@@ -245,7 +332,9 @@
     position: relative;
     max-height: 90px;
     overflow-y: auto;
-    width: 90%;
+    width: 100%;
+    margin: 0 0 1rem;
+    line-height: 1.6;
 }
 
 .notes-app .notes-display,

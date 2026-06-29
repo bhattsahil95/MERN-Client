@@ -18,17 +18,17 @@ function Header( {selectedOption, setSelectedOption} ) {
 
   return (
     <header className="notes-app-header">
-    <div className="notespage-header">
-      <h1 className="notes-app-header__title">Keeper Notes</h1>
-      <div className="notes-per-page-input">
-      <span className="notes-per-page-input__label">Notes per page</span>
-     
-      <Dropdown selectedValue={selectedOption} options={options} onChange={handleDropdownChange} />
-     
+      <div className="notespage-header">
+        <div>
+          <p className="notes-app-header__eyebrow">Personal workspace</p>
+          <h1 className="notes-app-header__title">Keeper Notes</h1>
+        </div>
+        <div className="notes-per-page-input">
+          <span className="notes-per-page-input__label">Notes per page</span>
+          <Dropdown selectedValue={selectedOption} options={options} onChange={handleDropdownChange} />
+        </div>
       </div>
-    </div>
     </header>
-    
   );
 }
 

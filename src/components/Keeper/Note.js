@@ -18,12 +18,15 @@ function Note(props) {
             : content;
 
     return (
-        <div className="note">
-            <h1>{limitedTitle}</h1>
-            <button className="note-read" onClick={displayNote}>
-                <OpenInNewTwoToneIcon />{" "}
-            </button>
-            <p className="note-content">{limitedContent}</p>
+        <article className="note" aria-label="Note card">
+            <div className="note__top">
+                <h1>{limitedTitle || "Untitled note"}</h1>
+                <button className="note-read" onClick={displayNote} aria-label="Open note">
+                    <OpenInNewTwoToneIcon />
+                </button>
+            </div>
+
+            <p className="note-content">{limitedContent || "Start writing to capture your ideas..."}</p>
 
             <div className="note-bottom">
                 <p className="time-stamp">
@@ -32,15 +35,12 @@ function Note(props) {
                     </span>{" "}
                     {timeCreated}
                 </p>
-                <div class="bg-blue-500 text-white p-4 bottom-10 ">
-                    This is a div TW with CSS classes.
-                </div>
 
-                <button className="note-delete" onClick={removeNote}>
+                <button className="note-delete" onClick={removeNote} aria-label="Delete note">
                     <DeleteOutlineIcon />
                 </button>
             </div>
-        </div>
+        </article>
     );
 }
 

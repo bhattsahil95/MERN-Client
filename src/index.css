@@ -98,6 +98,55 @@ img {
     border-radius: 999px;
 }
 
+.Toastify__toast-container {
+    z-index: 9999;
+}
+
+.Toastify__toast {
+    background: rgba(12, 13, 20, 0.96);
+    border: 1px solid rgba(255, 140, 0, 0.22);
+    border-left: 4px solid var(--color-accent);
+    border-radius: 14px;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
+    color: var(--color-text);
+    backdrop-filter: blur(14px);
+    font-family: var(--font-sans);
+}
+
+.Toastify__toast-body {
+    padding: 0.7rem 0.1rem 0.7rem 0.2rem;
+    font-size: 0.92rem;
+    line-height: 1.45;
+}
+
+.Toastify__toast-success {
+    border-left-color: #22c55e;
+}
+
+.Toastify__toast-error {
+    border-left-color: #ef4444;
+}
+
+.Toastify__toast-warning {
+    border-left-color: #f59e0b;
+}
+
+.Toastify__toast-info {
+    border-left-color: #38bdf8;
+}
+
+.Toastify__progress-bar {
+    background: linear-gradient(90deg, var(--color-accent), rgba(255, 255, 255, 0.35));
+}
+
+.Toastify__close-button {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.Toastify__close-button:hover {
+    color: #ffffff;
+}
+
 .section-label {
     font-family: var(--font-mono);
     font-size: 0.75rem;

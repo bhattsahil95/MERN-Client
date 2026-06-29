@@ -12,14 +12,15 @@ function App() {
         <Router>
             <div className="app-shell">
                 <ToastContainer
-                    autoClose={2000}
+                    autoClose={2200}
                     newestOnTop
                     closeOnClick
                     rtl={false}
                     pauseOnFocusLoss
                     draggable
                     pauseOnHover
-                    theme="colored"
+                    theme="dark"
+                    position="top-right"
                 />
                 <Navigation />
                 <main className="app-main">

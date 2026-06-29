@@ -1,14 +1,12 @@
 import axios from "axios";
-
-//My base url
-const BASE_URL = process.env.REACT_APP_BASE_URL;
+import { buildApiUrl } from "./apiConfig";
 
 //Get all the states
 
 //--------------------FETCH ALL NOTES -----------------------------//
 
 const getNotes = async () => {
-  const url = `${BASE_URL}note/data`;
+  const url = buildApiUrl("note/data");
   try {
     // await new Promise(resolve => setTimeout(resolve, 50000)); //
 
@@ -26,7 +24,7 @@ const getNotes = async () => {
 //-------------------- CRETA A NEW NOTE  -----------------------------//
 
 const createNewNote = async (noteData) => {
-  const url = `${BASE_URL}note/create`;
+  const url = buildApiUrl("note/create");
 
   try {
     const response = await axios.post(url, noteData);
@@ -47,7 +45,7 @@ const createNewNote = async (noteData) => {
 
 // In your noteStore.js
 const deleteNote = async (noteId) => {
-  const url = `${BASE_URL}note/delete/${noteId}`;
+  const url = buildApiUrl(`note/delete/${noteId}`);
   try {
     const response = await axios.delete(url);
     return response;
@@ -58,7 +56,7 @@ const deleteNote = async (noteId) => {
 };
 
 const updateNote = async (noteId, updatedFields) => {
-  const url = `${BASE_URL}note/update/${noteId}`;
+  const url = buildApiUrl(`note/update/${noteId}`);
   try {
     const response = await axios.put(url, updatedFields);
     return response; // Assuming the backend returns an object with `success` and `message` properties

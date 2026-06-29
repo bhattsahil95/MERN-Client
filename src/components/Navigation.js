@@ -56,6 +56,11 @@ function Navigation() {
 	const [mobileProjectsOpen, setMobileProjectsOpen] = useState(false);
 	const dropdownRef = useRef(null);
 
+	const closeMobile = () => {
+		setMobileOpen(false);
+		setMobileProjectsOpen(false);
+	};
+
 	useEffect(() => {
 		const handleClickOutside = (event) => {
 			if (
@@ -77,10 +82,18 @@ function Navigation() {
 		};
 	}, [mobileOpen]);
 
-	const closeMobile = () => {
-		setMobileOpen(false);
-		setMobileProjectsOpen(false);
-	};
+	useEffect(() => {
+		if (!mobileOpen) return;
+
+		const handleKeyDown = (event) => {
+			if (event.key === "Escape") {
+				closeMobile();
+			}
+		};
+
+		document.addEventListener("keydown", handleKeyDown);
+		return () => document.removeEventListener("keydown", handleKeyDown);
+	}, [mobileOpen]);
 
 	return (
 		<header className="site-header">

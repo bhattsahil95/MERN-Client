@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-const Dashboard = ({ notes }) => {
+const Dashboard = ({ notes, activeUsers }) => {
   const [totalNotes, setTotalNotes] = useState(0);
   const [totalActiveNotes, setTotalActiveNotes] = useState(0);
   const [totalInactiveNotes, setTotalInactiveNotes] = useState(0);
@@ -28,13 +28,18 @@ const Dashboard = ({ notes }) => {
 
   return (
     <div className="dashboard">
-   
+      {typeof activeUsers !== 'undefined' && (
+        <div className="counter counter-active-users">
+          <span className="counter-label">Active Users :</span>
+          <span className="counter-value counter-active-value">{activeUsers}</span>
+        </div>
+      )}
       <div className="counter">
-        <span className="counter-label">Total Notes  :</span>
+        <span className="counter-label">Total Notes :</span>
         <span className="counter-value">{totalNotes}</span>
       </div>
       <div className="counter">
-        <span className="counter-label"> Active Notes  :</span>
+        <span className="counter-label"> Active Notes :</span>
         <span className="counter-value">{totalActiveNotes}</span>
       </div>
       <div className="counter">

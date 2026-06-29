@@ -25,12 +25,21 @@ const useChatRoomStore = create((set) => ({
         })),
     clearRoomMessages: () => set({ roomMessages: [] }),
 
+    setRooms: (nextRooms) => set({ rooms: nextRooms || [] }),
+
     addRoom: (newRoom) =>
-        set((state) => ({
-            rooms: Array.isArray(newRoom)
-                ? [...state.rooms, ...newRoom]
-                : [...state.rooms, newRoom],
-        })),
+        set((state) => {
+            const incomingRooms = Array.isArray(newRoom) ? newRoom : [newRoom];
+            const mergedRooms = [...state.rooms];
+
+            incomingRooms.forEach((room) => {
+                if (!mergedRooms.some((existingRoom) => existingRoom.id === room.id)) {
+                    mergedRooms.push(room);
+                }
+            });
+
+            return { rooms: mergedRooms };
+        }),
 
     deleteRoom: (roomId) =>
         set((state) => ({

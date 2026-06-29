@@ -3,12 +3,12 @@ import Dropdown from "./Helper/dropdown";
 import noteStore from "../../noteStore";
 import Message from "./Helper/message";
 
-function Header({ selectedOption, setSelectedOption }) {
+function Header({ selectedOption, setSelectedOption, activeUsers }) {
     const options = [5, 10, 20, 50, 100];
     const { setNotePageOne } = noteStore();
 
     const handleDropdownChange = (event) => {
-        const selectedValue = event.target.value;
+        const selectedValue = parseInt(event.target.value, 10);
         setSelectedOption(selectedValue);
         setNotePageOne();
     };
@@ -17,7 +17,6 @@ function Header({ selectedOption, setSelectedOption }) {
         <header className="notes-app-header">
             <div className="notespage-header">
                 <h1 className="notes-app-header__title">MERN Notes</h1>
-
                 <div className="notes-per-page-input">
                     <Dropdown
                         selectedValue={selectedOption}
